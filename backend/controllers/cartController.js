@@ -1,5 +1,6 @@
 // controllers/cartController.js
 const Cart = require('../models/Cart');
+const Order = require('../models/Order');
 
 const addToCart = async (req, res) => {
   const { userId, productId, quantity } = req.body;
@@ -16,7 +17,7 @@ const addToCart = async (req, res) => {
       }
     }
     await cart.save();
-    res.json(cart);
+    res.json({message:"Added to cart",cart});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
@@ -40,14 +41,74 @@ const removeFromCart = async (req, res) => {
 
     cart.items = cart.items.filter(item => item.productId.toString() !== productId);
     await cart.save();
-    res.json(cart);
+    res.json({message:"removed from add to cart",cart});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+// controllers/cartController.js
+const updateCart = async (req, res) => {
+  const { userId } = req.params;
+  const { productId, quantity } = req.body;  // Assuming you pass productId and the new quantity
+  
+  try {
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+    
+    const item = cart.items.find(item => item.product.toString() === productId);
+    if (!item) {
+      return res.status(404).json({ message: 'Item not found in cart' });
+    }
+
+    item.quantity = quantity;  // Update the quantity of the product in the cart
+    await cart.save();
+
+    res.json({ message: 'Cart updated successfully', cart });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+// controllers/cartController.js
+const checkoutCart = async (req, res) => {
+  const { userId } = req.params;
+
+  try {
+    const cart = await Cart.findOne({ userId });
+    if (!cart || cart.items.length === 0) {
+      return res.status(400).json({ message: 'Cart is empty' });
+    }
+    
+    // Assume some payment gateway logic here
+
+    // After payment success, create an order
+    const order = new Order({
+      userId,
+      items: cart.items,
+      total: cart.total,
+      status: 'Pending',
+    });
+
+    await order.save();
+    cart.items = [];  // Empty the cart after successful checkout
+    await cart.save();
+
+    res.json({ message: 'Order placed successfully', order });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
 
+
+
+
+
+
 module.exports = {
   addToCart,
   getCart,
   removeFromCart,
+  updateCart,
+  checkoutCart
 };

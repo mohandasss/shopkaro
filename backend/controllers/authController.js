@@ -1,11 +1,10 @@
-// controllers/authController.js
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Register User
 const registerUser = async (req, res) => {
-  const { name, email, password, address } = req.body;
+  const { name, email, password, address, role } = req.body;  // include role
 
   // Check if all required fields are provided
   if (!name || !email || !password) {
@@ -19,16 +18,30 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: 'Email already registered' });
     }
 
-    // Create new user
-     await User.create({ name, email, password, address });
-    res.status(201).json({ message: 'User registered successfully' });
+    // Set default role to 'customer' if not provided
+    const userRole = role || 'customer';  // Default to 'customer' if no role is passed
+
+    // Create new user with the role passed in the request or the default one
+    const newUser = await User.create({ 
+      name, 
+      email, 
+      password, 
+      address,
+      role: userRole  // Assign the role
+    });
+
+    res.status(201).json({ 
+      message: 'User registered successfully',
+      user: {
+        name: newUser.name,
+        email: newUser.email,
+        role: newUser.role,
+      }
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-
 
 // Login User
 const loginUser = async (req, res) => {
@@ -54,4 +67,24 @@ const loginUser = async (req, res) => {
   }
 };
 
-module.exports = { registerUser, loginUser };
+
+const resetPassword = async (req, res) => {
+  const { email } = req.body;
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Generate reset token (this can be sent to email)
+    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+    
+    res.json({ message: 'Password reset token generated', token });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+module.exports = { registerUser, loginUser ,resetPassword};

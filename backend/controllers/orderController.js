@@ -25,8 +25,25 @@ const getUserOrders = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+const updateOrderStatus = async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body;
+
+  try {
+    const order = await Order.findByIdAndUpdate(id, { status }, { new: true });
+    if (!order) {
+      return res.status(404).json({ message: 'Order not found' });
+    }
+    res.json({ message: 'Order status updated successfully', order });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
 
 module.exports = {
   placeOrder,
   getUserOrders,
+  updateOrderStatus
 };
