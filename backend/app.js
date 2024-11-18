@@ -1,30 +1,42 @@
-// app.js
 const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
+
+// Importing route files
 const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const orderRoutes = require('./routes/orderRoutes');
-const userRoutes = require('./routes/userRoutes');  // Added userRoutes
-const adminRoutes = require('./routes/adminRoutes');  // Added adminRoutes // Added searchRoutes
+const userRoutes = require('./routes/userRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');  // New route
+const reviewRoutes = require('./routes/reviewRoutes');      // New route
+const wishlistRoutes = require('./routes/wishlistRoutes');  // New route
 
+// Load environment variables
 dotenv.config();
 
+// Initialize Express app
 const app = express();
+
+// Connect to the database
 connectDB();
 
-// Middleware
+// Global middleware
 app.use(cors());
 app.use(express.json());
 
-// Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/cart', cartRoutes);
-app.use('/api/orders', orderRoutes);
-app.use('/api/users', userRoutes); // User-related routes
-app.use('/api/admin', adminRoutes); // Admin dashboard and other admin-specific routes
+// API Routes
+app.use('/api/auth', authRoutes);           // Authentication routes
+app.use('/api/products', productRoutes);    // Product management
+app.use('/api/cart', cartRoutes);           // Cart management
+app.use('/api/orders', orderRoutes);        // Order management
+app.use('/api/users', userRoutes);          // User profile and address management
+app.use('/api/admin', adminRoutes);         // Admin-specific routes
+app.use('/api/categories', categoryRoutes); // Product categories
+app.use('/api/reviews', reviewRoutes);      // Product reviews
+app.use('/api/wishlist', wishlistRoutes);   // Wishlist management
 
+// Export the app instance
 module.exports = app;
