@@ -1,8 +1,10 @@
 const Product = require('../models/Product');
+const Category = require('../models/categoryModel');
 
+// Add Product
+// Add Product (with optional userId)
 const addProduct = async (req, res) => {
-  const { name, description, price, category, quantity, imageURL, rating } = req.body;
-
+  const { name, description, price, category, quantity, imageURL, rating, userId } = req.body;
 
   if (!name || !price) {
     return res.status(400).json({ error: 'Name and Price are required fields.' });
@@ -17,6 +19,7 @@ const addProduct = async (req, res) => {
       quantity,
       imageURL,
       rating,
+      userId, // Optional field if you want to associate the product with a user
     });
 
     await newProduct.save();
@@ -26,6 +29,8 @@ const addProduct = async (req, res) => {
   }
 };
 
+
+// Get All Products
 const getAllProducts = async (req, res) => {
   try {
     const products = await Product.find();
@@ -35,6 +40,7 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+// Get Product By Id
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findById(req.params.id);
@@ -45,6 +51,7 @@ const getProductById = async (req, res) => {
   }
 };
 
+// Update Product
 const updateProduct = async (req, res) => {
   const { id } = req.params;
   const { name, description, price, category, quantity, imageURL, rating } = req.body;
@@ -60,6 +67,7 @@ const updateProduct = async (req, res) => {
   }
 };
 
+// Delete Product
 const deleteProduct = async (req, res) => {
   const { id } = req.params;
 
@@ -74,29 +82,31 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+// Search API for Products and Categories
+const search = async (req, res) => {
+  const { query } = req.query; // Search query parameter
 
-const searchProducts = async (req, res) => {
-  const { query } = req.query; 
+  if (!query) {
+    return res.status(400).json({ error: 'Search query is required' });
+  }
 
   try {
+    // Search Products
     const products = await Product.find({
-      $or: [
-        { name: { $regex: query, $options: 'i' } },
-        { category: { $regex: query, $options: 'i' } }
-      ]
+      $text: { $search: query }, // Text search for product fields (name, description, etc.)
     });
 
-    res.json(products);
+    // Search Categories
+    const categories = await Category.find({
+      $text: { $search: query }, // Text search for category name and description
+    });
+
+    // Return combined results
+    res.json({ products, categories });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
-
-
-
-
-
-
 
 module.exports = {
   addProduct,
@@ -104,5 +114,5 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
-  searchProducts
+  search, // Export the new search function
 };

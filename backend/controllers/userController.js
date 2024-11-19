@@ -35,7 +35,7 @@ const updateUserAddress = async (req, res) => {
     if (!user) return res.status(404).json({ message: 'User not found' });
     user.address = address;
     await user.save();
-    res.json(user);
+    res.json({message :"Address sucessfully updated",user});
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

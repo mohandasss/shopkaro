@@ -2,6 +2,13 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
+  userId: { 
+    type: mongoose.Schema.Types.ObjectId, 
+    ref: 'User', // Reference to User model
+    required: true, 
+    unique: true, // Make sure userId is unique
+    default: function () { return this._id; } // Automatically set it to _id
+  },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },

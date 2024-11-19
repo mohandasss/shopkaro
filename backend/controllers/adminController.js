@@ -1,6 +1,8 @@
 
 const Order = require('../models/Order'); 
 
+const User = require('../models/User'); 
+
 const adminDashboard = async (req, res) => {
   try {
       const totalOrders = await Order.countDocuments();
@@ -23,7 +25,7 @@ const getAllUsers = async (req, res) => {
     const users = await User.find();
     res.json(users);
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(50).json({ message: error.message });
   }
 };
 

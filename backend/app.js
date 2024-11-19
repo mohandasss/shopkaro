@@ -35,7 +35,7 @@ app.use('/api/orders', orderRoutes);        // Order management
 app.use('/api/users', userRoutes);          // User profile and address management
 app.use('/api/admin', adminRoutes);         // Admin-specific routes
 app.use('/api/categories', categoryRoutes); // Product categories
-app.use('/api/reviews', reviewRoutes);      // Product reviews
+app.use('/api/products/reviews', reviewRoutes);      // Product reviews
 app.use('/api/wishlist', wishlistRoutes);   // Wishlist management
 
 // Export the app instance
