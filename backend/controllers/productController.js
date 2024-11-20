@@ -93,12 +93,12 @@ const search = async (req, res) => {
   try {
     // Search Products
     const products = await Product.find({
-      $text: { $search: query }, // Text search for product fields (name, description, etc.)
+      name: new RegExp(query,"i")
     });
 
     // Search Categories
     const categories = await Category.find({
-      $text: { $search: query }, // Text search for category name and description
+      name: new RegExp(query,"i")
     });
 
     // Return combined results

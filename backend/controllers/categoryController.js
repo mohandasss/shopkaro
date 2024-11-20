@@ -1,5 +1,5 @@
-
-const Category = require('../models/categoryModel'); // Assuming you have a Category model
+const Category = require('../models/categoryModel');
+const Product = require('../models/Product');
 
 // Get all categories
 exports.getAllCategories = async (req, res) => {
@@ -43,6 +43,21 @@ exports.deleteCategory = async (req, res) => {
     const category = await Category.findByIdAndDelete(id);
     if (!category) return res.status(404).json({ message: 'Category not found' });
     res.json({ message: 'Category deleted' });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+// Get products by category
+exports.getProductsByCategory = async (req, res) => {
+  const { categoryId } = req.params; // Get categoryId from request parameters
+  try {
+    // Find products that belong to the category with the given ID
+    const products = await Product.find({ category: categoryId }).populate('category');
+    if (products.length === 0) {
+      return res.status(404).json({ message: 'No products found for this category' });
+    }
+    res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

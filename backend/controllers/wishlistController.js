@@ -1,52 +1,67 @@
-const Wishlist = require('../models/wishlistModel'); // Assuming you have a Wishlist model
-const Product = require('../models/Product');
+const Wishlist = require("../models/wishlistModel");
+const Product = require("../models/Product");
+
 // Add item to wishlist
 const addToWishlist = async (req, res) => {
   const { userId, productId } = req.body;
 
-  // Optionally, check if the product exists before adding to wishlist
-  const productExists = await Product.findById(productId);
-  if (!productExists) {
-    return res.status(404).json({ message: 'Product not found' });
-  }
-
   try {
-    // Add productId to the wishlist items array, ensuring no duplicates with $addToSet
+    // Ensure the product exists
+    const productExists = await Product.findById(productId);
+    if (!productExists) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    // Find or create the wishlist for the user
     const wishlist = await Wishlist.findOneAndUpdate(
-      { userId },
-      { $addToSet: { products: productId } }, // Ensures the product is added only once
-      { new: true, upsert: true } // `new` returns the updated document; `upsert` creates a new wishlist if not found
+      { user: userId }, // Match wishlist by user ID
+      { $addToSet: { products: productId } }, // Add product to the list, avoiding duplicates
+      { new: true, upsert: true } // Create a new wishlist if none exists
     );
 
-    res.json({ message: 'Item added to wishlist', wishlist });
+    res.status(200).json({ message: 'Item added to wishlist', wishlist });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
-// Get all wishlist items
+
+
+// Get all wishlist items for a user
 const getWishlist = async (req, res) => {
+  const { userId } = req.params;
+
   try {
-    const wishlist = await Wishlist.findOne({ userId: req.params.userId });
-    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
-    res.json(wishlist.items);
+    const wishlist = await Wishlist.findOne({ user: userId }).populate('products');
+    if (!wishlist) {
+      return res.status(404).json({ message: 'Wishlist not found' });
+    }
+
+    res.status(200).json({ message: 'Wishlist retrieved', products: wishlist.products });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: 'Internal server error', error: error.message });
   }
 };
+
 
 // Remove item from wishlist
 const removeFromWishlist = async (req, res) => {
   const { userId, productId } = req.body;
+
   try {
+    // Remove the product from the user's wishlist
     const wishlist = await Wishlist.findOneAndUpdate(
-      { userId },
-      { $pull: { items: productId } }, // Removes the item
+      { user: userId },
+      { $pull: { products: productId } }, // Removes the product from the array
       { new: true }
     );
-    if (!wishlist) return res.status(404).json({ message: 'Wishlist not found' });
-    res.json({ message: 'Item removed from wishlist', wishlist });
+
+    if (!wishlist) {
+      return res.status(404).json({ message: "Wishlist not found" });
+    }
+
+    res.status(200).json({ message: "Item removed from wishlist", wishlist });
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 };
 

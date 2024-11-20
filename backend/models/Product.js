@@ -1,17 +1,22 @@
 const mongoose = require('mongoose');
 const User = require("../models/User");
+const Category = require("../models/categoryModel"); // Import Category model
 
 const productSchema = new mongoose.Schema({
   productId: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'Product', // Reference to Product model (this is optional, as each document already has an _id) 
+    ref: 'Product', // Optional, as _id is automatically unique
     unique: true, 
-    default: function () { return this._id; } // Set productId to be the same as _id by default
+    default: function () { return this._id; } 
   },
   name: { type: String, required: true },
   description: { type: String },
   price: { type: Number, required: true },
-  category: { type: String },
+  category: { 
+    type: mongoose.Schema.Types.ObjectId,  // Reference to Category model
+    ref: 'Category',  // Link to Category model
+    required: true // Ensure each product has a category
+  },
   quantity: { type: Number, default: 0 },
   imageURL: { type: String },
   rating: { type: Number, default: 0 },
@@ -23,7 +28,7 @@ const productSchema = new mongoose.Schema({
     }
   ],
 }, {
-  timestamps: true // Add timestamps for creation and update time
+  timestamps: true
 });
 
 module.exports = mongoose.model('Product', productSchema);

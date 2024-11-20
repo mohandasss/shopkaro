@@ -1,23 +1,12 @@
+
 const mongoose = require('mongoose');
-const User = require("../models/User");
-const Product = require("../models/Product");
 
-const wishlistSchema = new mongoose.Schema({
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Reference to User model
-    required: true,
+const wishlistSchema = new mongoose.Schema(
+  {
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // Reference to User
+    products: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Product' }], // Array of Product IDs
   },
-  products: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Product', // Reference to Product model
-    },
-  ],
-}, {
-  timestamps: true, // Automatically add `createdAt` and `updatedAt` fields
-});
+  { timestamps: true } // Automatically manage createdAt and updatedAt
+);
 
-const Wishlist = mongoose.model('Wishlist', wishlistSchema);
-
-module.exports = Wishlist;
+module.exports = mongoose.model('Wishlist', wishlistSchema);
