@@ -80,11 +80,4 @@ const deleteUser = async (userId) => {
 };
 
 // Export all functions at the end
-module.exports = {
-  register,
-  login,
-  resetPassword,
-  getAllUsers,
-  updateUserRole,
-  deleteUser,
-};
+export { register, login, resetPassword, getAllUsers, updateUserRole, deleteUser };
