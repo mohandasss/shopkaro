@@ -1,41 +1,41 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const upload = require('../config/multer');
 
 // Register User
 const registerUser = async (req, res) => {
-  const { name, email, password, address, role } = req.body;  // include role
+  const { name, email, password, address, role } = req.body; 
+  const profileImage = req.file ? req.file.path : ''; // If file is uploaded, get the path
 
-  // Check if all required fields are provided
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Please provide all required fields' });
   }
 
   try {
-    // Check if the email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       return res.status(400).json({ error: 'Email already registered' });
     }
 
-    // Set default role to 'customer' if not provided
-    const userRole = role || 'customer';  // Default to 'customer' if no role is passed
+    const userRole = role || 'customer';
 
-    // Create new user with the role passed in the request or the default one
-    const newUser = await User.create({ 
-      name, 
-      email, 
-      password, 
+    const newUser = await User.create({
+      name,
+      email,
+      password,
       address,
-      role: userRole  // Assign the role
+      role: userRole,
+      profileImage, // Save the profile image path
     });
 
-    res.status(201).json({ 
+    res.status(201).json({
       message: 'User registered successfully',
       user: {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
+        profileImage: newUser.profileImage,  // Return the profile image path in the response
       }
     });
   } catch (error) {

@@ -4,10 +4,10 @@ const bcrypt = require('bcryptjs');
 const userSchema = new mongoose.Schema({
   userId: { 
     type: mongoose.Schema.Types.ObjectId, 
-    ref: 'User', // Reference to User model
+    ref: 'User', 
     required: true, 
-    unique: true, // Make sure userId is unique
-    default: function () { return this._id; } // Automatically set it to _id
+    unique: true, 
+    default: function () { return this._id; } 
   },
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
@@ -15,6 +15,7 @@ const userSchema = new mongoose.Schema({
   role: { type: String, default: 'customer' },
   address: { type: String },
   orderHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
+  profileImage: { type: String },  
 });
 
 userSchema.pre('save', async function (next) {
