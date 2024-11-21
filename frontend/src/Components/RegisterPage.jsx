@@ -2,35 +2,52 @@ import { React, useState } from 'react';
 import icon1 from "../assets/icon.png";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../Apis/authAPI";
+import axios from 'axios';
 
 const RegisterPage = () => {
   const [name, setname] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [address, setaddress] = useState('');
+  const [profileImage, setProfileImage] = useState('');
   const [loader, setloader] = useState(false);
   const [buttonText, setButtonText] = useState('Register'); // For button text control
   const navigate = useNavigate(); // For redirection
 
+
+  const handleImageUpload = async (e) => {
+    const file = e.target.files[0];
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'your_cloudinary_upload_preset'); // Replace with your actual Cloudinary upload preset
+
+    try {
+      const res = await axios.post('https://api.cloudinary.com/v1_1/avatar/image/upload', formData); // Replace with your Cloudinary URL
+      setProfileImage(res.data.secure_url); // Store the image URL
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloader(true);
-    setButtonText('Loading...'); // Change button text to Loading
+    setButtonText('Loading...');
 
     try {
-      const userData = { name, email, password, address };
+      const userData = { name, email, password, address, profileImage };
       const response = await register(userData);
       console.log(response);
 
-      // After 1.5 seconds, redirect to login page
       setTimeout(() => {
-        navigate('/login'); // Redirect to login
+        navigate('/login');
       }, 1500);
 
     } catch (error) {
       console.log(error);
       setloader(false);
-      setButtonText('Register'); // Reset button text if there's an error
+      setButtonText('Register');
     }
   };
 
@@ -47,6 +64,28 @@ const RegisterPage = () => {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit} method="POST" className="space-y-6">
             {/* Name input */}
+             {/* Profile Picture Input */}
+          <div>
+            <div className='flex' >
+            <label
+                htmlFor="name"
+                className="block text-sm/6 font-medium text-gray-900"
+              ></label>
+            <label htmlFor="profileImage" className="block text-sm/6 font-medium text-gray-900">
+              Profile Picture
+            </label>
+            </div>
+            <div className="mt-2">
+              <input
+                id="profileImage"
+                name="profileImage"
+                type="file"
+                accept="image/*"
+                onChange={handleImageUpload}
+                className="block  p-1 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
+              />
+            </div>
+          </div>
             <div>
               <label
                 htmlFor="name"

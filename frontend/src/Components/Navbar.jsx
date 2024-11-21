@@ -1,7 +1,8 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import shaopkaro from "../assets/asli.jpg"
-import { useNavigate } from 'react-router-dom';
+import me from "../assets/me.png"
+import { useNavigate,Link } from 'react-router-dom';
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -40,11 +41,15 @@ const Navbar = () => {
           </div>
           <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
             <div className="flex shrink-0 items-center">
+              <Link to={"/"}>
               <img
                 alt="Your Company"
                 src={shaopkaro}
                 className="h-8 w-auto"
               />
+              
+              </Link>
+              
             </div>
             <div className="hidden sm:ml-6 sm:block">
               <div className="flex space-x-4">
@@ -82,7 +87,7 @@ const Navbar = () => {
                   <span className="sr-only">Open user menu</span>
                   <img
                     alt=""
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    src={me}
                     className="size-8 rounded-full"
                   />
                 </MenuButton>
@@ -108,13 +113,15 @@ const Navbar = () => {
                   </a>
                 </MenuItem>
                 <MenuItem>
-                  <button onClick={logout}
+                  <a
+                  onClick={logout}
                     href="#"
                     className="block px-4 py-2 text-sm text-gray-700 data-[focus]:bg-gray-100 data-[focus]:outline-none"
                   >
                     Logout
-                  </button>
+                  </a>
                 </MenuItem>
+
               </MenuItems>
             </Menu>
           </div>
