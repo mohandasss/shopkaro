@@ -7,86 +7,100 @@ const axiosInstance = axios.create({
   headers: {
     'Content-Type': 'application/json',
   },
-}); 
+});
+
+// Utility function to get the token
+const getAuthToken = () => {
+  return localStorage.getItem('token');
+};
 
 // Search Products and Categories
-export const searchProducts = async (query) => {
+const searchProducts = async (query) => {
   try {
     const response = await axiosInstance.get(`/search?query=${query}`);
     return response.data;
   } catch (error) {
     console.error('Error searching products:', error);
-    throw error;
+    throw new Error('Unable to search products');
   }
 };
 
 // Add a new Product
-export const addProduct = async (productData) => {
+const addProduct = async (productData) => {
+  if (!productData) throw new Error('Product data is required');
   try {
     const response = await axiosInstance.post('/add', productData, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`, // Assuming JWT token stored in localStorage
+        Authorization: `Bearer ${getAuthToken()}`,
       },
     });
     return response.data;
   } catch (error) {
     console.error('Error adding product:', error);
-    throw error;
+    throw new Error('Unable to add product');
   }
 };
 
 // Get All Products
-export const getAllProducts = async () => {
+const getAllProducts = async () => {
   try {
     const response = await axiosInstance.get('/');
-    return response.data; // List of all products
+    return response.data;
   } catch (error) {
     console.error('Error fetching all products:', error);
-    throw error;
+    throw new Error('Unable to fetch products');
   }
 };
 
 // Get Product By Id
-export const getProductById = async (productId) => {
+const getProductById = async (productId) => {
+  if (!productId) throw new Error('Product ID is required');
   try {
     const response = await axiosInstance.get(`/${productId}`);
-    return response.data; // A single product's details
+    return response.data;
   } catch (error) {
     console.error('Error fetching product by id:', error);
-    throw error;
+    throw new Error('Unable to fetch product by ID');
   }
 };
 
 // Update Product
-export const updateProduct = async (productId, updatedData) => {
+const updateProduct = async (productId, updatedData) => {
+  if (!productId || !updatedData) throw new Error('Product ID and updated data are required');
   try {
     const response = await axiosInstance.put(`/${productId}`, updatedData, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getAuthToken()}`,
       },
     });
-    return response.data; // Updated product data
+    return response.data;
   } catch (error) {
     console.error('Error updating product:', error);
-    throw error;
+    throw new Error('Unable to update product');
   }
 };
 
 // Delete Product
-export const deleteProduct = async (productId) => {
+const deleteProduct = async (productId) => {
+  if (!productId) throw new Error('Product ID is required');
   try {
     const response = await axiosInstance.delete(`/${productId}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${getAuthToken()}`,
       },
     });
-    return response.data; // Success message after deleting
+    return response.data;
   } catch (error) {
     console.error('Error deleting product:', error);
-    throw error;
+    throw new Error('Unable to delete product');
   }
 };
 
-export { searchProducts,addProduct,getAllProducts,getProductById,deleteProduct,updateProduct };
-
-
+export {
+  searchProducts,
+  addProduct,
+  getAllProducts,
+  getProductById,
+  deleteProduct,
+  updateProduct
+};
