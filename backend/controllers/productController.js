@@ -1,30 +1,45 @@
 const Product = require('../models/Product');
 const Category = require('../models/categoryModel');
+const cloudinary = require('../config/cloudinaryConfig');  // If using CommonJS
+
 
 // Add Product
 // Add Product (with optional userId)
 const addProduct = async (req, res) => {
-  const { name, description, price, category, quantity, imageURL, rating, userId } = req.body;
+  const { name, description, price, category, quantity, rating, userId } = req.body;
+
+  // Ensure image is in the form data (it should be part of the request)
+  const imageFile = req.files?.imageURL; // If using `express-fileupload` or `multer` for file uploads
 
   if (!name || !price) {
     return res.status(400).json({ error: 'Name and Price are required fields.' });
   }
 
+  if (!imageFile) {
+    return res.status(400).json({ error: 'Image is required.' });
+  }
+
   try {
+    // Upload image to Cloudinary
+    const uploadResponse = await cloudinary.uploader.upload(imageFile.tempFilePath);
+
+    // Create new Product
     const newProduct = new Product({
       name,
       description,
       price,
       category,
       quantity,
-      imageURL,
       rating,
-      userId, // Optional field if you want to associate the product with a user
+      userId,
+      imageURL: uploadResponse.secure_url,  // Store the image URL from Cloudinary
     });
 
+    // Save product to DB
     await newProduct.save();
     res.status(201).json({ message: 'Product added successfully', product: newProduct });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 };

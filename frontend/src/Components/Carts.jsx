@@ -58,15 +58,15 @@ const Carts = () => {
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
               <Cart
-                key={item.productId}
-                name={item.productId.name}
-                description={item.productId.description}
-                image={item.productId.imageURL}
-                price={item.productId.price}
-                quantity={item.quantity}
-                removeItem={handleRemoveFromCart} // Pass the handler to Cart component
-                productId={item.productId} // Pass the productId to remove item
-              />
+    key={item.productId._id} // Use _id or another unique field
+    name={item.productId.name}
+    description={item.productId.description}
+    image={item.productId.imageURL}
+    price={item.productId.price}
+    quantity={item.quantity}
+    removeItem={handleRemoveFromCart}
+    productId={item.productId._id} // Pass only the product's unique ID
+  />
             ))
           ) : (
             <p className="text-center text-gray-700">Your cart is empty.</p>

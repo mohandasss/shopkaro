@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const cors = require('cors');
 const connectDB = require('./config/db');
 const morgan = require('morgan');
+const fileUpload = require('express-fileupload');
 
 // Importing route files
 const authRoutes = require('./routes/authRoutes');
@@ -23,11 +24,13 @@ const app = express();
 
 // Connect to the database
 connectDB();
+app.use(express.urlencoded({ extended: true }));
 
 // Global middleware
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev')); // Logs HTTP requests
+app.use(fileUpload({ useTempFiles: true, tempFileDir: '/tmp/' }));
 
 // API Routes
 app.use('/api/auth', authRoutes);           // Authentication routes

@@ -280,17 +280,20 @@ function classNames(...classes) {
     </form>
 
     {/* Product grid */}
-    <div className="lg:col-span-3">
-      {products.map((product) => (
-        <CardDetails
-          key={product.id}  // Make sure the products have an 'id' property
-          image={product.image}
-          description={product.description}
-          name={product.name}
-          price={product.price}
-        />
-      ))}
-    </div>
+    <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+  {products.map((product) => (
+    <CardDetails
+      key={product.id}  // Ensure each product has a unique 'id'
+      image={product.imageURL}
+      description={product.description}
+      name={product.name}
+      price={product.price}
+    />
+  ))}
+</div>
+
+
+
   </div>
 </section>
 
