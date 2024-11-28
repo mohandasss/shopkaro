@@ -1,13 +1,14 @@
+import { Description } from "@headlessui/react";
 import React from "react";
 
-const Cart = ({ image, id, name, size, quantity, price, updateQuantity, removeItem }) => {
+const Cart = ({ image, id, name, description, quantity, price, updateQuantity, removeItem }) => {
   return (
     <div className="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
   <img src={image} alt={name} className="w-full rounded-lg sm:w-40" />
   <div className="sm:ml-4 sm:flex sm:w-full sm:justify-between">
     <div className="mt-5 sm:mt-0">
       <h2 className="text-lg font-bold text-gray-900">{name}</h2>
-      <p className="mt-1 text-xs text-gray-700">{size}</p>
+      <p className="mt-1 text-xs text-gray-700">{description}</p>
     </div>
     <div className="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
       <div className="flex items-center border-gray-100">

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const jwt = require('jsonwebtoken');
 
 // Update user profile details
 const updateUserProfile = async (req, res) => {
@@ -41,4 +42,29 @@ const updateUserAddress = async (req, res) => {
   }
 };
 
-module.exports = { updateUserProfile, updateUserAddress, getUserProfile };
+const getLoggedInUserProfile = async (req, res) => {
+  try {
+    // Extract the token from the request headers
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+      return res.status(401).json({ message: 'Unauthorized. Token missing.' });
+    }
+
+    // Verify and decode the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    const userId = decoded.id;
+
+    // Fetch the user data from the database
+    const user = await User.findById(userId).select('-password'); // Exclude the password field
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.json(user); // Send the user data as a response
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
+module.exports = { updateUserProfile,getLoggedInUserProfile, updateUserAddress, getUserProfile };
