@@ -15,7 +15,6 @@ const userSchema = new mongoose.Schema({
   role: { type: String, default: 'customer' },
   address: { type: String },
   orderHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],
-  profileImage: { type: String },  
 });
 
 userSchema.pre('save', async function (next) {

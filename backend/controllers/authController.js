@@ -1,12 +1,11 @@
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const upload = require('../config/multer');
 
 // Register User
 const registerUser = async (req, res) => {
   const { name, email, password, address, role } = req.body; 
-  const profileImage = req.file ? req.file.path : ''; // If file is uploaded, get the path
+
 
   if (!name || !email || !password) {
     return res.status(400).json({ error: 'Please provide all required fields' });
@@ -26,7 +25,7 @@ const registerUser = async (req, res) => {
       password,
       address,
       role: userRole,
-      profileImage, // Save the profile image path
+      
     });
 
     res.status(201).json({
@@ -35,7 +34,7 @@ const registerUser = async (req, res) => {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
-        profileImage: newUser.profileImage,  // Return the profile image path in the response
+        
       }
     });
   } catch (error) {

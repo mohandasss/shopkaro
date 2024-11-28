@@ -1,15 +1,26 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import Dail from "../assets/carousel/web.jpg"
+import Headphone from "../assets/carousel/friday.jpg"
+import nike from "../assets/carousel/hey.jpg"
+import Smart from "../assets/carousel/cyber.jpg"
+import SWATCH from "../assets/carousel/facebook.jpg"
 
 const Carousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const slides = [
-    "/docs/images/carousel/carousel-1.svg",
-    "/docs/images/carousel/carousel-2.svg",
-    "/docs/images/carousel/carousel-3.svg",
-    "/docs/images/carousel/carousel-4.svg",
-    "/docs/images/carousel/carousel-5.svg"
+    Dail, Headphone, nike, Smart, SWATCH
   ];
+
+  // Change slide every 2 seconds
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveIndex((prevIndex) => (prevIndex + 1) % slides.length);
+    }, 3500);
+
+    // Clear the interval on component unmount
+    return () => clearInterval(interval);
+  }, [slides.length]);
 
   const nextSlide = () => {
     setActiveIndex((prevIndex) => (prevIndex + 1) % slides.length);
@@ -20,7 +31,7 @@ const Carousel = () => {
   };
 
   return (
-    <div id="default-carousel" className="relative w-full" data-carousel="slide">
+    <div id="default-carousel" className="relative w-5/6 mt-8 md:w-3/4 lg:w-1.5/2 xl:w-4/5 mx-auto" data-carousel="slide">
       {/* Carousel wrapper */}
       <div className="relative h-56 overflow-hidden rounded-lg md:h-96">
         {slides.map((src, index) => (
@@ -29,7 +40,7 @@ const Carousel = () => {
             className={`absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2 transition-all duration-700 ease-in-out ${index === activeIndex ? 'opacity-100' : 'opacity-0'}`}
             data-carousel-item
           >
-            <img src={src} alt={`Slide ${index + 1}`} />
+            <img src={src} alt={`Slide ${index + 1}`} className="w-full h-full object-cover" />
           </div>
         ))}
       </div>

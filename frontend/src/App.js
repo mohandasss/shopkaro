@@ -5,6 +5,7 @@ import LoginPage from './Components/LoginPage';
 import RegisterPage from './Components/RegisterPage'; // Example: A Signup page
 import HomePage from "./pages/HomePage"
 import Navbar from './Components/Navbar'; // Ensure the path is correct relative to `App.js`
+import Carts from './Components/Carts';
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} /> {/* Default route */}
         <Route path="/register" element={<RegisterPage />} /> {/* Signup route */}
+        <Route path="/cart" element={<Carts/>} /> {/* Signup route */}
       </Routes>
     </div>
   );
