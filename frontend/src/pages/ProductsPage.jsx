@@ -294,7 +294,7 @@ function classNames(...classes) {
   ))}
 
   {/* Center the pagination horizontally */}
-  <div className="flex justify-center col-span-full mt-">
+  <div className="flex justify-center col-span-full mt-10">
     <Pagination />
   </div>
 </div>
