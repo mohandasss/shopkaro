@@ -1,24 +1,34 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom'; // Import Routes and Route
-import './App.css';
-import LoginPage from './Components/LoginPage';
-import RegisterPage from './Components/RegisterPage'; // Example: A Signup page
-import HomePage from "./pages/HomePage"
-import Navbar from './Components/Navbar'; // Ensure the path is correct relative to `App.js`
-import Carts from './Components/Carts';
-import ProductsPage from "./pages/ProductsPage"
-import { ThemeProvider } from "@material-tailwind/react"; 
+import React, { useState, useEffect } from "react";
+import { Routes, Route, useLocation } from "react-router-dom";
+import Loader from "./Components/Loader";
+import Navbar from "./Components/Navbar";
+import HomePage from "./pages/HomePage";
+import LoginPage from "./Components/LoginPage";
+import RegisterPage from "./Components/RegisterPage";
+import CartPage from "./pages/CartPage";
+import ProductsPage from "./pages/ProductsPage";
 
 function App() {
+  const [loading, setLoading] = useState(false);
+  const location = useLocation();
+
+  // Simulate loading state on route change
+  useEffect(() => {
+    setLoading(true);
+    const timer = setTimeout(() => setLoading(false), 200); // Simulated delay
+    return () => clearTimeout(timer);
+  }, [location]);
+
   return (
     <div className="App">
-     <Navbar/>
+      {loading && <Loader />}
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} /> {/* Default route */}
-        <Route path="/register" element={<RegisterPage />} /> {/* Signup route */}
-        <Route path="/cart" element={<Carts/>} /> {/* Signup route */}
-        <Route path="/products" element={<ProductsPage/>} /> {/* Signup route */}
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/cart" element={<CartPage />} />
+        <Route path="/products" element={<ProductsPage />} />
       </Routes>
     </div>
   );

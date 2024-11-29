@@ -12,6 +12,7 @@ const Carts = () => {
     const fetchUserProfileAndCart = async () => {
       try {
         const userProfile = await getLoggedInUserProfile();
+        console.log(userProfile);
         const cartData = await getCart(userProfile.userId);
         setCartItems(cartData.items);
         console.log(cartData.items);

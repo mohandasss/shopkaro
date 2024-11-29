@@ -1,4 +1,4 @@
-import { Description } from "@headlessui/react";
+
 import React from "react";
 
 const Cart = ({ image, id, name, description, quantity, price, updateQuantity, removeItem }) => {
