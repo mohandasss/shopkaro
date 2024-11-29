@@ -4,6 +4,7 @@ import CardDetails from "../Components/CardDetails"
 import { useState } from 'react'
 import { getAllProducts } from "../Apis/productAPI"
 import { useEffect } from "react"
+import Pagination from "../Components/Pegination"
 import {
   Dialog,
   DialogBackdrop,
@@ -83,7 +84,7 @@ function classNames(...classes) {
     const fetchProducts = async () => {
       try {
         const data = await getAllProducts();
-        setProducts(data); // Set the fetched products in state
+        setProducts(data.products); // Set the fetched products in state
         console.log(data);
         
       } catch (error) {
@@ -283,6 +284,7 @@ function classNames(...classes) {
     <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
   {products.map((product) => (
     <CardDetails
+      key={product._id}
       id={product._id} 
       image={product.imageURL}
       description={product.description}
@@ -290,7 +292,13 @@ function classNames(...classes) {
       price={product.price}
     />
   ))}
+
+  {/* Center the pagination horizontally */}
+  <div className="flex justify-center col-span-full mt-">
+    <Pagination />
+  </div>
 </div>
+
 {
  
   
@@ -301,9 +309,12 @@ function classNames(...classes) {
 </section>
 
         </main>
+        
+
+           
       </div>
     </div>
   )
 }
 
-export default ProductsPage
+export default ProductsPage 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 import Loader from "./Components/Loader";
 import Navbar from "./Components/Navbar";
+import Footer from "./Components/Footer";
 import HomePage from "./pages/HomePage";
 import LoginPage from "./Components/LoginPage";
 import RegisterPage from "./Components/RegisterPage";
@@ -33,6 +34,7 @@ function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
 
       </Routes>
+      <Footer/>
     </div>
   );
 }

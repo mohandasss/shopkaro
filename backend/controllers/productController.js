@@ -48,12 +48,36 @@ const addProduct = async (req, res) => {
 // Get All Products
 const getAllProducts = async (req, res) => {
   try {
-    const products = await Product.find();
-    res.json(products);
+    // Destructure query parameters with defaults for page and limit
+    const page = parseInt(req.query.page) || 1; // Default to page 1
+    const limit = parseInt(req.query.limit) || 6; // Default to 6 items per page
+
+    // Calculate the skip value based on page and limit
+    const skip = (page - 1) * limit;
+
+    // Fetch products with pagination (using limit and skip)
+    const products = await Product.find()
+      .skip(skip)
+      .limit(limit);
+
+    // Count the total number of products (for pagination UI)
+    const totalProducts = await Product.countDocuments();
+
+    // Calculate total pages (use ceiling to get a whole number of pages)
+    const totalPages = Math.ceil(totalProducts / limit);
+
+    // Send the response with products and pagination info
+    res.json({
+      products,
+      currentPage: page,
+      totalPages,
+      totalProducts,
+    });
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 // Get Product By Id
 const getProductById = async (req, res) => {

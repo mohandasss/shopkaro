@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import Dail from "../assets/carousel/web.jpg"
-import Headphone from "../assets/carousel/friday.jpg"
-import nike from "../assets/carousel/hey.jpg"
-import Smart from "../assets/carousel/cyber.jpg"
-import SWATCH from "../assets/carousel/facebook.jpg"
+import Dail from "../assets/carousel/cd.png"
+import Headphone from "../assets/carousel/bc.png"
+import nike from "../assets/carousel/ab.png"
+import games from "../assets/carousel/games.png"
 
 const Carousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   const slides = [
-    Dail, Headphone, nike, Smart, SWATCH
+    Dail, Headphone, nike,games
   ];
 
   // Change slide every 2 seconds
