@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Cart from "./Cart";
 import { getLoggedInUserProfile } from "../Apis/userAPI"; // Ensure this function is correctly implemented
 import { getCart , removeFromCart } from "../Apis/cartAPI"; // Assuming getCart fetches the cart for the user; // Import the removeFromCart function
-
+import Loader from "./Loader"
 const Carts = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -48,7 +48,7 @@ const Carts = () => {
 
   const total = subtotal + shippingCost;
 
-  if (loading) return <div>Loading...</div>;
+  if (loading) return <div><Loader/></div>;
   if (error) return <div>{error}</div>;
 
   return (

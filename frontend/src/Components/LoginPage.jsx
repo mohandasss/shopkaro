@@ -1,15 +1,16 @@
-import icon from "../assets/icon.png";
+import icon from "../assets/preview.png";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../Apis/authAPI";
 import { getLoggedInUserProfile } from "../Apis/userAPI";
+import Popup from "./popup";
 
 const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false); // Loading state to show a loading spinner if needed
   const navigate = useNavigate();
-
+  const [popupVisible, setPopupVisible] = useState(false);
   const handleSubmit = async (e) => {
     e.preventDefault();
   
@@ -25,7 +26,12 @@ const LoginPage = () => {
       if (profile) {
         setLoading(false); // Stop loading
         localStorage.setItem("user", JSON.stringify(profile)); // Store profile in local storage
-        navigate('/'); // Redirect to the home page after successful login
+         // Redirect to the home page after successful login
+        setPopupVisible(true); // Show popup on success
+      setTimeout(() => {
+        setPopupVisible(false); // Hide popup after 3 seconds
+        navigate('/');
+      }, 0);
       }
   
     } catch (error) {
@@ -40,9 +46,9 @@ const LoginPage = () => {
     <>
       <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img alt="Your Company" src={icon} className="mx-auto h-24 w-auto" />
+          <img alt="Your Company" src={icon} className="mx-auto h-52 w-auto" />
           <h2 className="mt-10 text-center text-2xl font-bold tracking-tight text-gray-900">
-            Sign in to your account
+            Login to your account
           </h2>
         </div>
 
@@ -102,6 +108,12 @@ const LoginPage = () => {
           </Link>
         </div>
       </div>
+      {popupVisible && (
+        <Popup
+        message={"Sucessfully Logged out"}
+        isVisible={true}
+        />
+      )}
     </>
   );
 };

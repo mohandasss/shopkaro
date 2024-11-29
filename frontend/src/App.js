@@ -7,6 +7,7 @@ import LoginPage from "./Components/LoginPage";
 import RegisterPage from "./Components/RegisterPage";
 import CartPage from "./pages/CartPage";
 import ProductsPage from "./pages/ProductsPage";
+import ProductDetails from "./Components/Productsdetails";
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -29,6 +30,8 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/cart" element={<CartPage />} />
         <Route path="/products" element={<ProductsPage />} />
+        <Route path="/products/:id" element={<ProductDetails />} />
+
       </Routes>
     </div>
   );

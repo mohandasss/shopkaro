@@ -1,8 +1,9 @@
 import { React, useState } from 'react';
-import icon1 from "../assets/icon.png";
+import icon1 from "../assets/preview.png";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../Apis/authAPI";
-import axios from 'axios';
+import Popup from './popup';
+import Loader from './Loader';
 
 const RegisterPage = () => {
   const [name, setname] = useState('');
@@ -12,6 +13,7 @@ const RegisterPage = () => {
   const [loader, setloader] = useState(false);
   const [buttonText, setButtonText] = useState('Register'); // For button text control
   const navigate = useNavigate(); // For redirection
+  const [popupVisible, setPopupVisible] = useState(false);
 
 
   
@@ -27,10 +29,11 @@ const RegisterPage = () => {
       const response = await register(userData);
       console.log(response);
 
+      setPopupVisible(true); // Show popup on success
       setTimeout(() => {
+        setPopupVisible(false); // Hide popup after 3 seconds
         navigate('/login');
-      }, 1500);
-
+      }, 2000);
     } catch (error) {
       console.log(error);
       setloader(false);
@@ -42,7 +45,7 @@ const RegisterPage = () => {
     <>
       <div className="flex min-h-screen flex-1 flex-col justify-center px-6 py-12 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-          <img alt="Your Company" src={icon1} className="mx-auto h-24 w-auto" />
+          <img alt="Your Company" src={icon1} className="mx-auto h-52 w-auto" />
           <h2 className="mt-10 text-center text-2xl/9 font-bold tracking-tight text-gray-900">
             Register Yourself
           </h2>
@@ -173,9 +176,7 @@ const RegisterPage = () => {
                   className="inline-block h-8 w-8 animate-spinner-grow rounded-full bg-current align-[-0.125em] text-surface opacity-100 motion-reduce:animate-spinner-grow dark:text-white"
                   role="status"
                 >
-                  <span className="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]">
-                    Loading...
-                  </span>
+                  <Loader/>
                 </div>
                 
                 ) : (
@@ -190,7 +191,7 @@ const RegisterPage = () => {
             <p className="mt-10 text-center text-sm/6 text-gray-500">
               Already a member?{" "}
               <a
-                href="#"
+                
                 className="font-semibold text-indigo-600 hover:text-indigo-500"
               >
                 Signin here!
@@ -199,6 +200,14 @@ const RegisterPage = () => {
           </Link>
         </div>
       </div>
+      {popupVisible && (
+        <Popup
+        message={"Sucessfully Registered"}
+        isVisible={true}
+        />
+      )}
+
+
     </>
   );
 };

@@ -283,7 +283,7 @@ function classNames(...classes) {
     <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
   {products.map((product) => (
     <CardDetails
-      key={product.id}  // Ensure each product has a unique 'id'
+      id={product._id} 
       image={product.imageURL}
       description={product.description}
       name={product.name}
@@ -291,7 +291,10 @@ function classNames(...classes) {
     />
   ))}
 </div>
-
+{
+ 
+  
+}
 
 
   </div>
