@@ -3,7 +3,7 @@
 /node_modules
 /.pnp
 .pnp.js
-src/Components/assets/
+src/assets/
 
 
 # testing
