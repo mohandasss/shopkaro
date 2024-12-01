@@ -29,7 +29,7 @@ const Cart = ({ image, id, name, description, quantity, price, updateQuantity, r
               value={quantity}
               onChange={(e) => {
                 const value = e.target.value;
-                if (/^\d+$/.test(value) || value === '') { // Only numbers or empty strings allowed
+                if (/^\d+$/.test(value) || value === '') { 
                   updateQuantity(id, Math.max(Number(value), 1));
                 }
               }}

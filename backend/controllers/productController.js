@@ -2,9 +2,7 @@ const Product = require('../models/Product');
 const Category = require('../models/categoryModel');
 const cloudinary = require('../config/cloudinaryConfig');  // If using CommonJS
 
-
 // Add Product
-// Add Product (with optional userId)
 const addProduct = async (req, res) => {
   const { name, description, price, category, quantity, rating, userId } = req.body;
 
@@ -44,7 +42,6 @@ const addProduct = async (req, res) => {
   }
 };
 
-
 // Get All Products
 const getAllProducts = async (req, res) => {
   try {
@@ -77,7 +74,6 @@ const getAllProducts = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
 
 // Get Product By Id
 const getProductById = async (req, res) => {
@@ -132,12 +128,12 @@ const search = async (req, res) => {
   try {
     // Search Products
     const products = await Product.find({
-      name: new RegExp(query,"i")
+      name: new RegExp(query, "i")
     });
 
     // Search Categories
     const categories = await Category.find({
-      name: new RegExp(query,"i")
+      name: new RegExp(query, "i")
     });
 
     // Return combined results

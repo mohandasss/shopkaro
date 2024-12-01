@@ -10,9 +10,9 @@ const Pagination = ({ totalPages = 5, onPageChange }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/products?page=${active}&limit=6`);
-       console.log(response.data);
-       
-        if (onPageChange) onPageChange(response.data);
+        console.log(response.data);
+        
+        if (onPageChange) onPageChange(response.data);  // Pass relevant data to parent
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -28,7 +28,6 @@ const Pagination = ({ totalPages = 5, onPageChange }) => {
       setActive(index);
     },
   });
-
 
   const next = () => {
     if (active < totalPages) {
@@ -48,6 +47,7 @@ const Pagination = ({ totalPages = 5, onPageChange }) => {
         className="flex items-center gap-2 text-black disabled:text-gray-300 cursor-pointer"
         onClick={prev}
         disabled={active === 1}
+        aria-label="Previous Page"
       >
         <ArrowLeftIcon strokeWidth={2} className="h-4 w-4 text-black" />
         Previous
@@ -58,6 +58,7 @@ const Pagination = ({ totalPages = 5, onPageChange }) => {
             {...getItemProps(index + 1)}
             key={index}
             className={`px-3 py-1 rounded-full cursor-pointer ${active === index + 1 ? "bg-black text-white" : "text-gray-600"}`}
+            aria-label={`Page ${index + 1}`}
           >
             {index + 1}
           </button>
@@ -67,6 +68,7 @@ const Pagination = ({ totalPages = 5, onPageChange }) => {
         className="flex items-center gap-2 text-black disabled:text-gray-300 cursor-pointer"
         onClick={next}
         disabled={active === totalPages}
+        aria-label="Next Page"
       >
         Next
         <ArrowRightIcon strokeWidth={2} className="text-black h-4 w-4" />

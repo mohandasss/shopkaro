@@ -1,10 +1,12 @@
 
 'use client'
 import CardDetails from "../Components/CardDetails"
-import { useState } from 'react'
-import { getAllProducts } from "../Apis/productAPI"
+import { useState,useCallback } from 'react'
+
 import { useEffect } from "react"
+import getProductsById from "../Apis/categoriesAPI"
 import Pagination from "../Components/Pegination"
+import axios from "axios"
 import {
   Dialog,
   DialogBackdrop,
@@ -27,13 +29,7 @@ const sortOptions = [
   { name: 'Price: Low to High', href: '#', current: false },
   { name: 'Price: High to Low', href: '#', current: false },
 ]
-const subCategories = [
-  { name: 'Totes', href: '#' },
-  { name: 'Backpacks', href: '#' },
-  { name: 'Travel Bags', href: '#' },
-  { name: 'Hip Bags', href: '#' },
-  { name: 'Laptop Sleeves', href: '#' },
-]
+
 const filters = [
   {
     id: 'color',
@@ -78,22 +74,40 @@ function classNames(...classes) {
 
  const ProductsPage= ()=> {
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [products, setProducts] = useState([]); 
+  const [products, setProducts] = useState([]);
+  const [totalPages, setTotalPages] = useState(1); // Track total pages
+  const [currentPage, setCurrentPage] = useState(1); // Track current page
+  const [subCategories,setSubCategories]= useState([])
+
+   const getcategories = async()=>{
+
+    const products  = await getProductsById(categoriesId);
+    
+
+   }
+
+
+
+  const fetchProducts = async (page) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/api/products?page=${page}&limit=6`);
+      setProducts(response.data.products);
+      setTotalPages(response.data.totalPages);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  // Memoize the page change handler
+  const handlePageChange = useCallback((data) => {
+    setProducts(data.products);
+    setCurrentPage(data.currentPage);
+    setTotalPages(data.totalPages);
+  }, []);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const data = await getAllProducts();
-        setProducts(data.products); // Set the fetched products in state
-        console.log(data);
-        
-      } catch (error) {
-        console.error('Error fetching products:', error);
-      }
-    };
-
-    fetchProducts(); // Call the function to fetch products
-  }, []);
+    fetchProducts(currentPage); // Fetch products when the current page changes
+  }, [currentPage]); // Dependency on currentPage to re-fetch products
 
 
   return (
@@ -281,23 +295,32 @@ function classNames(...classes) {
     </form>
 
     {/* Product grid */}
-    <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 min-h-full">
   {products.map((product) => (
-    <CardDetails
-      key={product._id}
-      id={product._id} 
-      image={product.imageURL}
-      description={product.description}
-      name={product.name}
-      price={product.price}
-    />
+    <div className="flex flex-col h-full"> {/* Added a flex container for alignment */}
+      <CardDetails
+        key={product._id}
+        id={product._id}
+        image={product.imageURL}
+        description={product.description}
+        name={product.name}
+        price={product.price}
+      />
+    </div>
   ))}
+</div>
+
 
   {/* Center the pagination horizontally */}
   <div className="flex justify-center col-span-full mt-10">
-    <Pagination />
-  </div>
+  <Pagination
+    totalPages={totalPages}
+    currentPage={currentPage}
+    onPageChange={handlePageChange}
+  />
 </div>
+
+
 
 {
  

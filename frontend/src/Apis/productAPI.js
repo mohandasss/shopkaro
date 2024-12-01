@@ -45,6 +45,7 @@ const addProduct = async (productData) => {
 const getAllProducts = async () => {
   try {
     const response = await axiosInstance.get('/');
+    
     return response.data;
   } catch (error) {
     console.error('Error fetching all products:', error);
