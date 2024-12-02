@@ -10,12 +10,20 @@ const axiosInstance = axios.create({
 });
 
 
+
+
+
+
+
+
+
+
 const getProductsById = async(categoriesId)=>{
             try {
                 const categories =await axiosInstance.get(`/${categoriesId}`)
-                return categories.data
-                console.log(categories.data);
                 
+                console.log(categories.data);
+                return categories.data
             } catch (error) {
                
                 throw new Error('Catogies not availbe');
@@ -24,7 +32,7 @@ const getProductsById = async(categoriesId)=>{
 
 }
 
-export {
+export default {
 getProductsById
   };
   

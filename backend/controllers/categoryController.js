@@ -4,7 +4,8 @@ const Product = require('../models/Product');
 // Get all categories
 exports.getAllCategories = async (req, res) => {
   try {
-    const categories = await Category.find();
+    // Populate the products field in the Category model
+    const categories = await Category.find().populate('products');
     res.json(categories);
   } catch (error) {
     res.status(500).json({ message: error.message });

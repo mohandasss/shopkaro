@@ -9,13 +9,27 @@ const axiosInstance = axios.create({
   },
 });
 
+
+const OK = 'http://localhost:5000/api/categories/';
+
+const axiosOK = axios.create({
+  baseURL: OK,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+
+
+
+
 // Utility function to get the token
 const getAuthToken = () => {
   return localStorage.getItem('token');
 };
 
 // Search Products and Categories
-const searchProducts = async (query) => {
+export  const searchProducts = async (query) => {
   try {
     const response = await axiosInstance.get(`/search?query=${query}`);
     return response.data;
@@ -26,7 +40,7 @@ const searchProducts = async (query) => {
 };
 
 // Add a new Product
-const addProduct = async (productData) => {
+export  const addProduct = async (productData) => {
   if (!productData) throw new Error('Product data is required');
   try {
     const response = await axiosInstance.post('/add', productData, {
@@ -42,7 +56,7 @@ const addProduct = async (productData) => {
 };
 
 // Get All Products
-const getAllProducts = async () => {
+export  const getAllProducts = async () => {
   try {
     const response = await axiosInstance.get('/');
     
@@ -54,19 +68,21 @@ const getAllProducts = async () => {
 };
 
 // Get Product By Id
-const getProductById = async (productId) => {
-  if (!productId) throw new Error('Product ID is required');
+// Get Category By Id
+export const getCategoryById = async (categoryId) => {
+  if (!categoryId) throw new Error('Category ID is required');
   try {
-    const response = await axiosInstance.get(`/${productId}`);
+    const response = await axiosOK.get(`/${categoryId}`);
     return response.data;
   } catch (error) {
-    console.error('Error fetching product by id:', error);
-    throw new Error('Unable to fetch product by ID');
+    console.error('Error fetching category by ID:', error.response || error.message);
+    throw new Error('Unable to fetch category by ID');
   }
 };
 
+
 // Update Product
-const updateProduct = async (productId, updatedData) => {
+export  const updateProduct = async (productId, updatedData) => {
   if (!productId || !updatedData) throw new Error('Product ID and updated data are required');
   try {
     const response = await axiosInstance.put(`/${productId}`, updatedData, {
@@ -82,7 +98,7 @@ const updateProduct = async (productId, updatedData) => {
 };
 
 // Delete Product
-const deleteProduct = async (productId) => {
+export  const deleteProduct = async (productId) => {
   if (!productId) throw new Error('Product ID is required');
   try {
     const response = await axiosInstance.delete(`/${productId}`, {
@@ -97,11 +113,17 @@ const deleteProduct = async (productId) => {
   }
 };
 
-export {
-  searchProducts,
-  addProduct,
-  getAllProducts,
-  getProductById,
-  deleteProduct,
-  updateProduct
-};
+ export const getAllCategories = async()=>{
+  try {
+      const categories =await axiosOK.get(`/`)
+    
+      return categories.data
+  } catch (error) {
+     
+      throw new Error('Catogies not availbe');
+  }
+
+
+}
+
+

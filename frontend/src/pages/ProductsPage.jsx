@@ -4,7 +4,7 @@ import CardDetails from "../Components/CardDetails"
 import { useState,useCallback } from 'react'
 
 import { useEffect } from "react"
-import getProductsById from "../Apis/categoriesAPI"
+import {getAllCategories,getCategoryById} from "../Apis/productAPI"
 import Pagination from "../Components/Pegination"
 import axios from "axios"
 import {
@@ -79,12 +79,25 @@ function classNames(...classes) {
   const [currentPage, setCurrentPage] = useState(1); // Track current page
   const [subCategories,setSubCategories]= useState([])
 
-   const getcategories = async()=>{
-
-    const products  = await getProductsById(categoriesId);
+ 
+  const getCategories = async () => {
+    try {
+      const categories = await getAllCategories();
+      console.log('Fetched categories:', categories); // Debugging
+      setSubCategories(categories);
+    } catch (error) {
+      console.error("Error fetching categories:", error);
+    }
+  };
+  
     
-
-   }
+  
+    const handleCategoryClick = async(productId)=>{
+           const productsid =await getCategoryById(productId);
+           console.log(productsid);
+           
+    }
+   
 
 
 
@@ -106,7 +119,8 @@ function classNames(...classes) {
   }, []);
 
   useEffect(() => {
-    fetchProducts(currentPage); // Fetch products when the current page changes
+    fetchProducts(currentPage);
+    getCategories();   // Fetch products when the current page changes
   }, [currentPage]); // Dependency on currentPage to re-fetch products
 
 
@@ -140,15 +154,19 @@ function classNames(...classes) {
               {/* Filters */}
               <form className="mt-4 border-t border-gray-200">
                 <h3 className="sr-only">Categories</h3>
-                <ul role="list" className="px-2 py-3 font-medium text-gray-900">
-                  {subCategories.map((category) => (
-                    <li key={category.name}>
-                      <a href={category.href} className="block px-2 py-3">
-                        {category.name}
-                      </a>
-                    </li>
-                  ))}
-                </ul>
+                
+  {subCategories.map((category) => (
+    <li key={category._id}>
+      <button
+        onClick={() => handleCategoryClick(category.id)}
+        className="block decoration-white w-full text-left px-4 py-2 0 text-black rounded cursor-pointer z-10"
+      >
+        {category.name}
+      </button>
+    </li>
+  ))}
+
+
 
                 {filters.map((section) => (
                   <Disclosure key={section.id} as="div" className="border-t border-gray-200 px-4 py-6">
@@ -253,11 +271,16 @@ function classNames(...classes) {
     <form className="hidden lg:block">
       <h3 className="sr-only">Categories</h3>
       <ul role="list" className="space-y-4 border-b border-gray-200 pb-6 text-sm font-medium text-gray-900">
-        {subCategories.map((category) => (
-          <li key={category.name}>
-            <a href={category.href}>{category.name}</a>
-          </li>
-        ))}
+      {subCategories.map((category) => (
+    <li key={category._id}>
+      <button
+        onClick={() => handleCategoryClick(category.id)}
+        className="block decoration-white w-full text-left px-4 py-2 0 text-black rounded cursor-pointer z-10"
+      >
+        {category.name}
+      </button>
+    </li>
+  ))}
       </ul>
 
       {filters.map((section) => (
@@ -297,9 +320,9 @@ function classNames(...classes) {
     {/* Product grid */}
     <div className="lg:col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-4 min-h-full">
   {products.map((product) => (
-    <div className="flex flex-col h-full"> {/* Added a flex container for alignment */}
+    <div  key={product._id} className="flex flex-col h-full"> {/* Added a flex container for alignment */}
       <CardDetails
-        key={product._id}
+       
         id={product._id}
         image={product.imageURL}
         description={product.description}

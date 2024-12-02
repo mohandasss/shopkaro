@@ -10,7 +10,7 @@ const Pagination = ({ totalPages = 5, onPageChange }) => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/products?page=${active}&limit=6`);
-        console.log(response.data);
+        
         
         if (onPageChange) onPageChange(response.data);  // Pass relevant data to parent
       } catch (error) {
