@@ -73,6 +73,8 @@ export const getCategoryById = async (categoryId) => {
   if (!categoryId) throw new Error('Category ID is required');
   try {
     const response = await axiosOK.get(`/${categoryId}`);
+    console.log(response.data);
+    
     return response.data;
   } catch (error) {
     console.error('Error fetching category by ID:', error.response || error.message);

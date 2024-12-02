@@ -94,6 +94,7 @@ function classNames(...classes) {
   
     const handleCategoryClick = async(productId)=>{
            const productsid =await getCategoryById(productId);
+           
            console.log(productsid);
            
     }

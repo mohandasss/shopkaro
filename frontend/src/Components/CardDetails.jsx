@@ -32,11 +32,11 @@ function CardDetails({ image, name, price, description, rating, id }) {
       </div>
 
       <Link
-        to={{
-          pathname: `/products/${id}`,
-          state: { image, name, price, description, rating },
-        }}
-      >
+  to={{
+    pathname: `/products/${id}`,
+    state: { image, name, price, description, rating }, // Passing state here
+  }}
+>
         <div className="p-4 flex flex-col justify-between flex-grow">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-md font-medium text-gray-900">{name}</h3>
