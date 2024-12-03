@@ -1,3 +1,25 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@keyframes scroll-reviews {
+    0% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(-200%);
+    }
+  }
+  
+  .animate-scroll-reviews {
+    animation: scroll-reviews 700s linear infinite;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .animate-scroll-reviews {
+      animation: scroll-reviews 90s linear infinite;
+    }
+  }
+  

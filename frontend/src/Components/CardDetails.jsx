@@ -2,18 +2,14 @@ import React, { useState } from "react";
 import { GiSelfLove } from "react-icons/gi";
 import { Link } from "react-router-dom";
 
-function CardDetails({ image, name, price, description, rating, id }) {
+function CardDetails({ reviews,image, name,quantity, price, description, rating, id }) {
   const [isLiked, setIsLiked] = useState(false);
 
   const toggleLike = (e) => {
     e.stopPropagation();
     setIsLiked((prev) => !prev);
   };
-
- 
-  
-
-  return (
+return (
     <div className="max-w-xs rounded-lg overflow-hidden shadow-lg p-4 flex flex-col h-full">
       <div className="h-64 relative rounded-lg overflow-hidden">
         <div
@@ -38,7 +34,7 @@ function CardDetails({ image, name, price, description, rating, id }) {
           }
      <Link
   to={`/products/${id}`}
-  state={{ image, name, price, description, rating }}
+  state={{ image, name, price, description, quantity, rating,reviews }}
 >
 
         <div className="p-4 flex flex-col justify-between flex-grow">
