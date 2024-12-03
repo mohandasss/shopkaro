@@ -23,7 +23,7 @@ const getLoggedInUserProfile = async () => {
     return response.data;  // Return user profile data
   } catch (error) {
     console.error('Error fetching user profile:', error);
-    throw error;  // Rethrow error to be handled by the calling component
+    throw error;  // Rethrow error to be handled by the calling component 
   }
 };
 

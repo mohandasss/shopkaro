@@ -14,7 +14,7 @@
   }
   
   .animate-scroll-reviews {
-    animation: scroll-reviews 700s linear infinite;
+    animation: scroll-reviews 1000s linear infinite;
   }
   
   @media screen and (max-width: 768px) {

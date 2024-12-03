@@ -83,7 +83,7 @@ function classNames(...classes) {
   const getCategories = async () => {
     try {
       const categories = await getAllCategories();
-      console.log('Fetched categories:', categories); // Debugging
+     
       setSubCategories(categories);
     } catch (error) {
       console.error("Error fetching categories:", error);
@@ -95,7 +95,7 @@ function classNames(...classes) {
     const handleCategoryClick = async(productId)=>{
            const productsid =await getCategoryById(productId);
            
-           console.log(productsid);
+           
            
     }
    

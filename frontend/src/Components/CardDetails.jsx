@@ -1,15 +1,50 @@
 import React, { useState } from "react";
 import { GiSelfLove } from "react-icons/gi";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import { getLoggedInUserProfile } from "../Apis/userAPI"; 
+import {addToCart} from "../Apis/cartAPI" // Assuming this is the path to the function.
 
-function CardDetails({ reviews,image, name,quantity, price, description, rating, id }) {
+function CardDetails({ reviews, image, name, quantity, price, description, rating, id }) {
   const [isLiked, setIsLiked] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const toggleLike = (e) => {
     e.stopPropagation();
     setIsLiked((prev) => !prev);
   };
-return (
+
+  const handleAddToCart = async () => {
+    try {
+      setIsLoading(true);
+      setError("");
+
+      // Fetch the logged-in user's profile to get the userId
+      const userProfile = await getLoggedInUserProfile();
+      const userId = userProfile._id; // Assuming _id is the userId field in the profile
+    
+      
+      // Call the addToCart function to add the product to the cart
+      const response = await addToCart({
+        userId, // User's ID
+        productId: id, // Product's ID
+        quantity: 1, // Quantity of the product to add
+      });
+
+      if (response.status === 200) {
+        // Optionally, handle success (e.g., show a success message)
+        alert("Product added to cart!");
+      }
+    } catch (error) {
+      setError("Failed to add product to cart. Please try again.");
+      console.error("Error adding product to cart:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
     <div className="max-w-xs rounded-lg overflow-hidden shadow-lg p-4 flex flex-col h-full">
       <div className="h-64 relative rounded-lg overflow-hidden">
         <div
@@ -29,14 +64,11 @@ return (
           className="h-full w-full object-cover rounded-lg"
         />
       </div>
-          {
-             console.log(name,price)
-          }
-     <Link
-  to={`/products/${id}`}
-  state={{ image, name, price, description, quantity, rating,reviews }}
->
 
+      <Link
+        to={`/products/${id}`}
+        state={{ image, name, price, description, quantity, rating, reviews }}
+      >
         <div className="p-4 flex flex-col justify-between flex-grow">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-md font-medium text-gray-900">{name}</h3>
@@ -47,9 +79,16 @@ return (
           </p>
         </div>
       </Link>
-      <button className="w-full bg-gray-900 text-white hover:bg-gray-900/10 hover:text-gray-900 focus:outline-none focus:ring-2 duration-500 focus:ring-gray-900 py-2 px-4 rounded-md mt-4">
-        Add to Cart
+
+      <button
+        onClick={handleAddToCart}
+        disabled={isLoading}
+        className="w-full bg-gray-900 text-white hover:bg-gray-900/10 hover:text-gray-900 focus:outline-none focus:ring-2 duration-500 focus:ring-gray-900 py-2 px-4 rounded-md mt-4"
+      >
+        {isLoading ? "Adding..." : "Add to Cart"}
       </button>
+
+      {error && <p className="text-red-500 mt-2">{error}</p>}
     </div>
   );
 }

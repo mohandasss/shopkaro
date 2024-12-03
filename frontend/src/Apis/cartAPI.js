@@ -18,17 +18,20 @@ const axiosInstance = axios.create({
 
 // Function to add an item to the cart
 const addToCart = async (userId, productId, quantity) => {
+  
+  
   try {
     const token = getToken(); // Fetch the JWT token dynamically
-    const response = await axiosInstance.post(
-      '/add',
-      { userId, productId, quantity },
-      {
-        headers: {
-          'Authorization': `Bearer ${token}`, // Add token dynamically
-        },
-      }
-    );
+    console.log(token);
+    
+    const payload = { userId, productId, quantity };
+    
+
+    const response = await axiosInstance.post('/add', payload, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+      },
+    });
     console.log('Item added to cart:', response.data);
     return response.data; // Returns updated cart
   } catch (error) {
@@ -36,6 +39,7 @@ const addToCart = async (userId, productId, quantity) => {
     throw error;
   }
 };
+
 
 // Function to get the cart details for a specific user
 const getCart = async (userId) => {
