@@ -323,7 +323,6 @@ function classNames(...classes) {
   {products.map((product) => (
     <div  key={product._id} className="flex flex-col h-full"> {/* Added a flex container for alignment */}
       <CardDetails
-       
         id={product._id}
         image={product.imageURL}
         description={product.description}

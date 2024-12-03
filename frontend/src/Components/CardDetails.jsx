@@ -10,6 +10,9 @@ function CardDetails({ image, name, price, description, rating, id }) {
     setIsLiked((prev) => !prev);
   };
 
+ 
+  
+
   return (
     <div className="max-w-xs rounded-lg overflow-hidden shadow-lg p-4 flex flex-col h-full">
       <div className="h-64 relative rounded-lg overflow-hidden">
@@ -30,13 +33,14 @@ function CardDetails({ image, name, price, description, rating, id }) {
           className="h-full w-full object-cover rounded-lg"
         />
       </div>
-
-      <Link
-  to={{
-    pathname: `/products/${id}`,
-    state: { image, name, price, description, rating }, // Passing state here
-  }}
+          {
+             console.log(name,price)
+          }
+     <Link
+  to={`/products/${id}`}
+  state={{ image, name, price, description, rating }}
 >
+
         <div className="p-4 flex flex-col justify-between flex-grow">
           <div className="flex items-center justify-between mb-2">
             <h3 className="text-md font-medium text-gray-900">{name}</h3>
@@ -45,12 +49,11 @@ function CardDetails({ image, name, price, description, rating, id }) {
           <p className="text-sm text-gray-600 opacity-75 flex-grow mb-4 min-h-[60px]">
             {description}
           </p>
-          
         </div>
       </Link>
       <button className="w-full bg-gray-900 text-white hover:bg-gray-900/10 hover:text-gray-900 focus:outline-none focus:ring-2 duration-500 focus:ring-gray-900 py-2 px-4 rounded-md mt-4">
-            Add to Cart
-          </button>
+        Add to Cart
+      </button>
     </div>
   );
 }

@@ -1,4 +1,5 @@
 import React from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Button,
   IconButton,
@@ -6,60 +7,88 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { HeartIcon } from "@heroicons/react/24/outline";
-import { useLocation } from "react-router-dom"; // To access the state
-import Loader from "./Loader";
 
-const ProductDetails = () => {
-  const { state } = useLocation(); // Receive the state passed from CardDetails
+function ProductDetails() {
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  if (!state) {
-    return <Loader/>;
+  const { image, name, price, description, rating } = location.state || {};
+
+  // Handle case where state is missing (e.g., user accesses directly via URL)
+  if (!location.state) {
+    return (
+      <div className="max-w-2xl mx-auto p-4">
+        <h1 className="text-xl font-bold text-red-500">No product details found.</h1>
+        <button
+          onClick={() => navigate("/products")}
+          className="mt-4 bg-blue-500 text-white py-2 px-4 rounded"
+        >
+          Go Back to Products
+        </button>
+      </div>
+    );
   }
-
-  const { image, name, price, rating, description } = state;
 
   return (
     <section className="py-16 px-8">
-      <div className="mx-auto container grid place-items-center grid-cols-1 md:grid-cols-2">
-        <img
-          src={image}
-          alt={name}
-          className="h-[36rem]"
-        />
-        <div>
-          <Typography className="mb-4" variant="h3">
-            {name}
-          </Typography>
-          <Typography variant="h5">${price}</Typography>
-          <Typography className="!mt-4 text-base font-normal leading-[27px] !text-gray-500">
-            {description}
-          </Typography>
-          <div className="my-8 flex items-center gap-2">
-            <Rating value={rating} className="text-amber-500" />
-            <Typography className="!text-sm font-bold !text-gray-700">
-              {rating} / 5 (100 reviews)
-            </Typography>
+    <div className="mx-auto container grid place-items-center grid-cols-1 md:grid-cols-2">
+      {/* Product Image */}
+      <img
+        src={image}
+        alt={name}
+        className="h-[36rem] object-cover rounded-lg"
+      />
+
+      {/* Product Details */}
+      <div className="mt-8 md:mt-0 md:ml-8">
+        <h3 className="text-3xl font-bold mb-4">{name}</h3>
+        <p className="text-xl text-gray-900">₹{price}</p>
+        <p className="mt-4 text-base text-gray-500">{description}</p>
+
+        {/* Rating */}
+        <div className="my-8 flex items-center gap-2">
+          <div className="flex">
+            {[...Array(5)].map((_, index) => (
+              <span
+                key={index}
+                className={`text-xl ${
+                  index < rating ? "text-yellow-500" : "text-gray-300"
+                }`}
+              >
+                &#9733;
+              </span>
+            ))}
           </div>
-          <Typography color="blue-gray" variant="h6">
-            Color
-          </Typography>
-          <div className="my-8 mt-3 flex items-center gap-2">
-            {/* Add color options dynamically if needed */}
-            <div className="h-5 w-5 rounded border border-gray-900 bg-blue-gray-600 "></div>
-            <div className="h-5 w-5 rounded border border-blue-gray-100 "></div>
-            <div className="h-5 w-5 rounded border border-blue-gray-100 bg-gray-900 "></div>
-          </div>
-          <div className="mb-4 flex w-full items-center gap-3 md:w-1/2">
-            <Button color="gray" className="w-52">
-              Add to Cart
-            </Button>
-            <IconButton color="gray" variant="text" className="shrink-0">
-              <HeartIcon className="h-6 w-6" />
-            </IconButton>
-          </div>
+          <p className="text-sm font-bold text-gray-700">
+            {rating} / 5 (100 reviews)
+          </p>
+        </div>
+
+        {/* Color Selection */}
+        <h6 className="text-lg font-semibold text-gray-900">Color</h6>
+        <div className="my-3 flex items-center gap-2">
+          {/* Add color options dynamically if needed */}
+          <div className="h-5 w-5 rounded-full border border-gray-900 bg-blue-600"></div>
+          <div className="h-5 w-5 rounded-full border border-blue-100 bg-gray-300"></div>
+          <div className="h-5 w-5 rounded-full border border-blue-100 bg-black"></div>
+        </div>
+
+        {/* Buttons */}
+        <div className="mt-8 flex items-center gap-3">
+          <button className="bg-gray-900 text-white py-2 px-4 rounded-md w-52 hover:bg-gray-800">
+            Add to Cart
+          </button>
+          <button
+            className="bg-gray-100 text-gray-900 py-2 px-4 rounded-md hover:bg-gray-200"
+          >
+            <span role="img" aria-label="heart">
+              ❤️
+            </span>
+          </button>
         </div>
       </div>
-    </section>
+    </div>
+  </section>
   );
 }
 
