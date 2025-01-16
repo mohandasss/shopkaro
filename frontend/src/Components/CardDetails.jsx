@@ -1,11 +1,19 @@
 import React, { useState } from "react";
 import { GiSelfLove } from "react-icons/gi";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { getLoggedInUserProfile } from "../Apis/userAPI"; 
-import {addToCart} from "../Apis/cartAPI" // Assuming this is the path to the function.
+import { getLoggedInUserProfile } from "../Apis/userAPI";
+import { addToCart } from "../Apis/cartAPI";
 
-function CardDetails({ reviews, image, name, quantity, price, description, rating, id }) {
+function CardDetails({
+  reviews,
+  image,
+  name,
+  quantity,
+  price,
+  description,
+  rating,
+  id,
+}) {
   const [isLiked, setIsLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,8 +31,7 @@ function CardDetails({ reviews, image, name, quantity, price, description, ratin
       // Fetch the logged-in user's profile to get the userId
       const userProfile = await getLoggedInUserProfile();
       const userId = userProfile._id; // Assuming _id is the userId field in the profile
-    
-      
+
       // Call the addToCart function to add the product to the cart
       const response = await addToCart({
         userId, // User's ID
@@ -55,7 +62,9 @@ function CardDetails({ reviews, image, name, quantity, price, description, ratin
         >
           <GiSelfLove
             size={18}
-            className={`${isLiked ? "text-white" : "text-gray-700"} hover:scale-105 duration-200`}
+            className={`${
+              isLiked ? "text-white" : "text-gray-700"
+            } hover:scale-105 duration-200`}
           />
         </div>
         <img

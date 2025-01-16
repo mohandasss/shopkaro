@@ -14,7 +14,7 @@ const addReview = async (req, res) => {
     const review = {
       userId: req.user._id, // Assuming the user is authenticated and req.user has the logged-in user info
       rating,
-      comment
+      comment 
     };
 
     product.reviews.push(review);

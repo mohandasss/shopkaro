@@ -8,7 +8,6 @@ function ProductDetails() {
 
   const { image, reviews, name, price, description, rating, quantity } =
     location.state || {};
-  console.log(image, name, price, reviews, description, quantity, rating);
 
   // Handle case where state is missing (e.g., user accesses directly via URL)
   if (!location.state) {

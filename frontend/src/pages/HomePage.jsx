@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from "../Components/Carousel";
 import Bento from "../Components/Bento";
+import Testimonials from '../Components/Testimonials';
+import ProductCarousel from "../Components/ProductCarousel"
 
 const HomePage = () => {
   const [user, setUser] = useState(null);
@@ -17,6 +19,8 @@ const HomePage = () => {
     <>
       <Carousel />
       <Bento />
+      <ProductCarousel/>
+      <Testimonials/>
 
     </>
   );

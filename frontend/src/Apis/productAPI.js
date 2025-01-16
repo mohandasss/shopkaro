@@ -67,6 +67,19 @@ export  const getAllProducts = async () => {
   }
 };
 
+export  const getAllProductsAtOnce = async () => {
+  try {
+    const response = await axiosInstance.get('/getall');
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching all products:', error);
+    throw new Error('Unable to fetch products');
+  }
+};
+
+
+
 // Get Product By Id
 // Get Category By Id
 export const getCategoryById = async (categoryId) => {

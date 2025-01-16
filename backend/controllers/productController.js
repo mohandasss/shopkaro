@@ -75,6 +75,23 @@ const getAllProducts = async (req, res) => {
   }
 };
 
+const getAllProductsAtOnce = async (req, res) => {
+  try {
+    // Fetch all products from the database
+    const products = await Product.find();
+
+    // Send the response with the full list of products
+    res.json({
+      products,
+      totalProducts: products.length, // Count of total products
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
+
+
+
 // Get Product By Id
 const getProductById = async (req, res) => {
   try {
@@ -149,5 +166,6 @@ module.exports = {
   getProductById,
   updateProduct,
   deleteProduct,
-  search, // Export the new search function
+  search,
+  getAllProductsAtOnce // Export the new search function
 };
