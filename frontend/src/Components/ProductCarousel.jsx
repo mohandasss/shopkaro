@@ -6,7 +6,7 @@ import {Link} from "react-router-dom"
 const ProductCard = ({ product }) => {
   
   return (
-    <div className="w-full sm:w-1/2 lg:w-1/5 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col h-full">
+    <div className=" hover:scale-105 duration-300 w-full sm:w-1/2 lg:w-1/5 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col h-full">
       <Link to={`/products/${product._id}`} state={product} className="flex-grow">
         <img
           className="p-8 h-96 w-full object-cover rounded-s-2xl"

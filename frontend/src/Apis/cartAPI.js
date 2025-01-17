@@ -30,7 +30,7 @@ const addToCart = async (userId, productId, quantity) => {
     const response = await axiosInstance.post('/add', payload, {
       headers: {
         'Authorization': `Bearer ${token}`,
-      },
+      }
     });
     console.log('Item added to cart:', response.data);
     return response.data; // Returns updated cart
