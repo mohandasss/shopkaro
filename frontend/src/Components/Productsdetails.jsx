@@ -42,7 +42,9 @@ function ProductDetails() {
         // Add or remove from wishlist based on the current state of isLiked
         if (!isLiked) {
           // Add product to wishlist
-          await addToWishlist(userId, _id);
+         const response = await addToWishlist(userId, _id);
+         console.log(response);
+         
         } else {
           // Remove product from wishlist
           await removeFromWishlist(userId, _id);
