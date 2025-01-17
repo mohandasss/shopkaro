@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { getAllProductsAtOnce } from "../Apis/productAPI";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 
 // Product Card Component
 const ProductCard = ({ product }) => {
-  
+  const { _id, imageURL, name, price, description, quantity, rating, reviews } =
+    product;
+    console.log(product);
+    
+
   return (
     <div className=" hover:scale-105 duration-300 w-full sm:w-1/2 lg:w-1/5 max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700 flex flex-col h-full">
-      <Link to={`/products/${product._id}`} state={product} className="flex-grow">
+      <Link to={`/products/${product._id}`} state={{ _id, imageURL, name, price, description, quantity, rating, reviews }} className="flex-grow">
         <img
           className="p-8 h-96 w-full object-cover rounded-s-2xl"
           src={product.imageURL}
@@ -20,7 +24,9 @@ const ProductCard = ({ product }) => {
           {Array.from({ length: 5 }, (_, index) => (
             <svg
               key={index}
-              className={`w-4 h-4 ${index < product.rating ? "text-yellow-300" : "text-gray-200"}`}
+              className={`w-4 h-4 ${
+                index < product.rating ? "text-yellow-300" : "text-gray-200"
+              }`}
               xmlns="http://www.w3.org/2000/svg"
               fill="currentColor"
               viewBox="0 0 22 20"
@@ -33,14 +39,15 @@ const ProductCard = ({ product }) => {
           </span>
         </div>
         <div className="flex items-center justify-between">
-          <span className="text-3xl font-bold text-gray-900 dark:text-white">₹{product.price}</span>
+          <span className="text-3xl font-bold text-gray-900 dark:text-white">
+            ₹{product.price}
+          </span>
           <button className="text-white bg-blue-700 hover:bg-blue-800 font-medium rounded-lg text-sm px-5 py-2.5">
             Add to cart
           </button>
         </div>
       </div>
     </div>
-
   );
 };
 
@@ -101,7 +108,7 @@ const ProductSections = () => {
       try {
         const response = await getAllProductsAtOnce();
         console.log(response);
-        
+
         setProducts(response.products);
       } catch (error) {
         console.error("Error fetching products:", error);

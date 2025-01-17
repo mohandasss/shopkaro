@@ -12,7 +12,7 @@ function CardDetails({
   price,
   description,
   rating,
-  id,
+  _id,
 }) {
   const [isLiked, setIsLiked] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -35,7 +35,7 @@ function CardDetails({
       // Call the addToCart function to add the product to the cart
       const response = await addToCart({
         userId, // User's ID
-        productId: id, // Product's ID
+        productId: _id, // Product's ID
         quantity: 1, // Quantity of the product to add
       });
 
@@ -51,22 +51,13 @@ function CardDetails({
     }
   };
 
+  console.log(_id);
+  
+
   return (
     <div className="max-w-xs rounded-lg overflow-hidden shadow-lg p-4 flex flex-col h-full">
       <div className="h-64 relative rounded-lg overflow-hidden">
-        <div
-          onClick={toggleLike}
-          className={`absolute top-2 right-2 p-1 rounded-full shadow-md cursor-pointer transition-colors ${
-            isLiked ? "bg-pink-600" : "bg-white"
-          }`}
-        >
-          <GiSelfLove
-            size={18}
-            className={`${
-              isLiked ? "text-white" : "text-gray-700"
-            } hover:scale-105 duration-200`}
-          />
-        </div>
+       
         <img
           src={imageURL}
           alt={name}
@@ -75,8 +66,8 @@ function CardDetails({
       </div>
 
       <Link
-        to={`/products/${id}`}
-        state={{ imageURL, name, price, description, quantity, rating, reviews }}
+        to={`/products/${_id}`}
+        state={{ _id,imageURL, name, price, description, quantity, rating, reviews }}
       >
         <div className="p-4 flex flex-col justify-between flex-grow">
           <div className="flex items-center justify-between mb-2">

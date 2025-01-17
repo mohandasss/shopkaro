@@ -10,7 +10,11 @@ function ProductDetails() {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const { _id, imageURL, reviews, name, price, description, rating, quantity } =
-    location.state || {};
+    location.state;
+
+        
+        console.log(location.state._id);
+        
 
   // Handle case where state is missing (e.g., user accesses directly via URL)
   if (!location.state) {
@@ -41,10 +45,10 @@ function ProductDetails() {
 
         // Add or remove from wishlist based on the current state of isLiked
         if (!isLiked) {
+          
+          console.log(userId,  _id); // Optionally, log the response
           // Add product to wishlist
-         const response = await addToWishlist(userId, _id);
-         console.log(response);
-         
+          const response = await addToWishlist(userId, _id);
         } else {
           // Remove product from wishlist
           await removeFromWishlist(userId, _id);

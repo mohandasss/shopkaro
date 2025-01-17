@@ -328,7 +328,7 @@ function classNames(...classes) {
     
     <div  key={product._id} className="flex flex-col h-full"> {/* Added a flex container for alignment */}
       <CardDetails
-        id={product._id}
+        _id={product._id}
         imageURL={product.imageURL}
         description={product.description}
         name={product.name}
