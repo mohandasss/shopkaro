@@ -6,7 +6,7 @@ import { addToCart } from "../Apis/cartAPI";
 
 function CardDetails({
   reviews,
-  image,
+  imageURL,
   name,
   quantity,
   price,
@@ -68,7 +68,7 @@ function CardDetails({
           />
         </div>
         <img
-          src={image}
+          src={imageURL}
           alt={name}
           className="h-full w-full object-cover rounded-lg"
         />
@@ -76,7 +76,7 @@ function CardDetails({
 
       <Link
         to={`/products/${id}`}
-        state={{ image, name, price, description, quantity, rating, reviews }}
+        state={{ imageURL, name, price, description, quantity, rating, reviews }}
       >
         <div className="p-4 flex flex-col justify-between flex-grow">
           <div className="flex items-center justify-between mb-2">

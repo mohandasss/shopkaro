@@ -6,8 +6,10 @@ function ProductDetails() {
   const navigate = useNavigate();
   const [showAllReviews, setShowAllReviews] = useState(false);
 
-  const { image, reviews, name, price, description, rating, quantity } =
+  const { imageURL, reviews, name, price, description, rating, quantity } =
     location.state || {};
+    
+    
 
   // Handle case where state is missing (e.g., user accesses directly via URL)
   if (!location.state) {
@@ -37,7 +39,7 @@ function ProductDetails() {
       <div className="mx-auto container grid place-items-center grid-cols-1 md:grid-cols-2 gap-10">
         {/* Product Image */}
         <img
-          src={image}
+          src={imageURL}
           alt={name}
           className="h-[36rem] sticky object-cover rounded-lg"
         />
