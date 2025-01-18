@@ -34,18 +34,30 @@ const getCart = async (req, res) => {
 };
 
 const removeFromCart = async (req, res) => {
-  const { userId, productId } = req.body;
   try {
-    const cart = await Cart.findOne({ userId });
-    if (!cart) return res.status(404).json({ message: 'Cart not found' });
+    const { userId, productId } = req.body;
 
-    cart.items = cart.items.filter(item => item.productId.toString() !== productId);
+    // Find the cart for the given userId
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    // Filter out the item with the matching productId
+    cart.items = cart.items.filter(item => item.productId.toString() !== productId.toString());
+
+    // Save the updated cart to the database
     await cart.save();
-    res.json({message:"removed from add to cart",cart});
+
+    // Send the updated cart as the response
+    res.json({ message: 'Removed from cart', cart });
   } catch (error) {
+    console.error('Error in removeFromCart:', error.message);
     res.status(500).json({ error: error.message });
   }
 };
+
+
 // controllers/cartController.js
 const updateCart = async (req, res) => {
   const { userId } = req.params;
@@ -64,6 +76,8 @@ const updateCart = async (req, res) => {
 
     item.quantity = quantity;  // Update the quantity of the product in the cart
     await cart.save();
+    
+    
 
     res.json({ message: 'Cart updated successfully', cart });
   } catch (error) {

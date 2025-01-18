@@ -18,6 +18,8 @@ const axiosInstance = axios.create({
 
 // Function to add an item to the cart
 const addToCart = async (userId, productId, quantity) => {
+  quantity = 1;
+  
   
   
   try {
@@ -67,7 +69,7 @@ const removeFromCart = async (userId, productId) => {
         'Authorization': `Bearer ${token}`, // Add token dynamically
       },
     });
-    console.log('Item removed from cart:', response.data);
+   
     return response.data; // Returns the updated cart
   } catch (error) {
     console.error('Error removing item from cart:', error);

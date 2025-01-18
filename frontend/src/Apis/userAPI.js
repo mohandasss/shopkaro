@@ -14,12 +14,13 @@ const getLoggedInUserProfile = async () => {
       throw new Error('No token found, please login');
     }
     
-    const response = await axios.get(`${BASE_URL}profile`, {
+    const response = await axios.get(`${BASE_URL}/profile`, {
       headers: {
         Authorization: `Bearer ${token}`,  // Attach the token to the request header
       },
     });
-
+    
+    
     return response.data;  // Return user profile data
   } catch (error) {
     console.error('Error fetching user profile:', error);

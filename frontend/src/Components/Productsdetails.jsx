@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { GiSelfLove } from "react-icons/gi";
-import { addToWishlist,removeFromWishlist } from "../Apis/WistlistAPI";
+import { addToWishlist, removeFromWishlist } from "../Apis/WistlistAPI";
 import { getLoggedInUserProfile } from "../Apis/userAPI";
+import Popup from "./popup";
+import { addToCart } from "../Apis/cartAPI";
 
 function ProductDetails() {
   const location = useLocation();
@@ -11,10 +13,10 @@ function ProductDetails() {
   const [isLiked, setIsLiked] = useState(false);
   const { _id, imageURL, reviews, name, price, description, rating, quantity } =
     location.state;
+    const [popupMessage, setPopupMessage] = useState("");
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
 
-        
-        console.log(location.state._id);
-        
+  console.log(location.state._id);
 
   // Handle case where state is missing (e.g., user accesses directly via URL)
   if (!location.state) {
@@ -35,26 +37,22 @@ function ProductDetails() {
 
   const toggleLike = async () => {
     try {
-      // Fetch the logged-in user profile
       const userProfile = await getLoggedInUserProfile();
       const userId = userProfile._id;
 
-      // Check if user is logged in
       if (userId) {
         setIsLiked((prev) => !prev);
 
-        // Add or remove from wishlist based on the current state of isLiked
         if (!isLiked) {
-          
-          console.log(userId,  _id); // Optionally, log the response
-          // Add product to wishlist
           const response = await addToWishlist(userId, _id);
+          setPopupMessage("Item added to wishlist!");
         } else {
-          // Remove product from wishlist
           await removeFromWishlist(userId, _id);
+          setPopupMessage("Item removed from wishlist!");
         }
+        setIsPopupVisible(true);
+        setTimeout(() => setIsPopupVisible(false), 3000);
       } else {
-        // Handle case where user is not logged in
         console.error("User is not logged in.");
       }
     } catch (error) {
@@ -72,6 +70,26 @@ function ProductDetails() {
     showAllReviews ? reviews.length : 5
   );
   const duplicateReviews = displayedReviews.concat(displayedReviews);
+
+  if (isPopupVisible) {
+    setTimeout(() => {
+      setIsPopupVisible(false);
+    }, 3000); // Hide after 3 seconds
+  }
+
+  const handlecart = async (id, quantity) => {
+    try {
+      const userProfile = await getLoggedInUserProfile();
+      const userId = userProfile._id;
+      const response = await addToCart(userId, id, quantity);
+
+      setPopupMessage("Item added to cart!");
+      setIsPopupVisible(true);
+      setTimeout(() => setIsPopupVisible(false), 3000);
+    } catch (error) {
+      console.error("Something went wrong:", error);
+    }
+  };
 
   return (
     <section className="py-16 px-8">
@@ -121,7 +139,12 @@ function ProductDetails() {
             <button className="bg-gray-900 text-white py-2 px-4 rounded-md w-52 hover:bg-gray-800">
               Buy now
             </button>
-            <button className="bg-gray-900 text-white py-2 px-4 rounded-md w-52 hover:bg-gray-800">
+            <button
+              onClick={() => {
+                handlecart(_id, 1);
+              }}
+              className="bg-gray-900 text-white py-2 px-4 rounded-md w-52 hover:bg-gray-800"
+            >
               Add to Cart
             </button>
             <div
@@ -168,9 +191,7 @@ function ProductDetails() {
                         </span>
                       ))}
                     </div>
-                    <p className="text-sm text-gray-500">
-                      {review.rating} / 5
-                    </p>
+                    <p className="text-sm text-gray-500">{review.rating} / 5</p>
                   </div>
                   <p className="text-gray-700">{review.comment}</p>
                 </div>
@@ -191,6 +212,9 @@ function ProductDetails() {
           </button>
         )}
       </div>
+
+      {/* Show Popup outside of the button */}
+      <Popup message={popupMessage} isVisible={isPopupVisible} />
     </section>
   );
 }

@@ -12,8 +12,9 @@ const HomePage = () => {
     
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {
-      setUser(storedUser); // Set the user state
+      setUser(storedUser); 
     }
+    
   }, []);
 
   return (

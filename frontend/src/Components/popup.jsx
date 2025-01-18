@@ -3,7 +3,7 @@ import "./Popup.css"; // Import the CSS file for animations
 
 const Popup = ({ message, isVisible }) => {
   return (
-    <>
+<>
       {isVisible && (
         <div
           style={{

@@ -14,6 +14,8 @@ const Carts = () => {
       try {
         const userProfile = await getLoggedInUserProfile();
         const cartData = await getCart(userProfile.userId);
+       
+        
 
         // Filter out items with a null productId
         const validItems = cartData.items.filter((item) => item.productId !== null);
@@ -67,16 +69,21 @@ const Carts = () => {
         <div className="rounded-lg md:w-2/3">
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
-              <Cart
-                key={item._id} // Use the unique `_id` from the cart item
-                name={item.productId?.name || "Unknown Product"}
-                description={item.productId?.description || "No description available"}
-                image={item.productId?.imageURL || "placeholder.jpg"}
-                price={item.productId?.price || 0}
-                quantity={item.quantity}
-                removeItem={handleRemoveFromCart}
-                productId={item.productId?._id} // Ensure `productId` exists
-              />
+              
+              
+              <div key={item.productId?._id} >
+                <Cart
+                  id={item.productId?._id} // Use the unique `_id` from the cart item
+                  name={item.productId?.name || "Unknown Product"}
+                  description={item.productId?.description || "No description available"}
+                  image={item.productId?.imageURL || "placeholder.jpg"}
+                  price={item.productId?.price || 0}
+                  quantity={item.quantity}
+                  removeItem={handleRemoveFromCart}
+                  productId={item.productId?._id} // Ensure `productId` exists
+                />
+
+              </div>
             ))
           ) : (
             <p className="text-center text-gray-700">Your cart is empty.</p>
