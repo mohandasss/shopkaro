@@ -1,0 +1,14 @@
+/* Add this CSS for the text animation */
+@keyframes fadeIn {
+    0% {
+      opacity: 0;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+  
+  .animate-fade {
+    animation: fadeIn 1s ease-in-out;
+  }
+  

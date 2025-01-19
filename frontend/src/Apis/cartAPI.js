@@ -18,15 +18,16 @@ const axiosInstance = axios.create({
 
 // Function to add an item to the cart
 const addToCart = async (userId, productId, quantity) => {
-  quantity = 1;
   
   
-  
+
   try {
     const token = getToken(); // Fetch the JWT token dynamically
     console.log(token);
     
     const payload = { userId, productId, quantity };
+    console.log(payload);
+    
     
 
     const response = await axiosInstance.post('/add', payload, {
