@@ -3,6 +3,7 @@ import Cart from "./Cart";
 import { getLoggedInUserProfile } from "../Apis/userAPI";
 import { getCart, removeFromCart } from "../Apis/cartAPI";
 import Loader from "./Loader";
+import RazorpayCheckout from "./RazorpayCheckout";
 
 const Carts = () => {
   const [cartItems, setCartItems] = useState([]);
@@ -14,8 +15,6 @@ const Carts = () => {
       try {
         const userProfile = await getLoggedInUserProfile();
         const cartData = await getCart(userProfile.userId);
-       
-        
 
         // Filter out items with a null productId
         const validItems = cartData.items.filter((item) => item.productId !== null);
@@ -69,20 +68,17 @@ const Carts = () => {
         <div className="rounded-lg md:w-2/3">
           {cartItems.length > 0 ? (
             cartItems.map((item) => (
-              
-              
-              <div key={item.productId?._id} >
+              <div key={item.productId?._id}>
                 <Cart
-                  id={item.productId?._id} // Use the unique `_id` from the cart item
+                  id={item.productId?._id}
                   name={item.productId?.name || "Unknown Product"}
                   description={item.productId?.description || "No description available"}
                   image={item.productId?.imageURL || "placeholder.jpg"}
                   price={item.productId?.price || 0}
                   quantity={item.quantity}
                   removeItem={handleRemoveFromCart}
-                  productId={item.productId?._id} // Ensure `productId` exists
+                  productId={item.productId?._id}
                 />
-
               </div>
             ))
           ) : (
@@ -123,9 +119,14 @@ const Carts = () => {
               <p className="text-sm text-gray-700">including VAT</p>
             </div>
           </div>
-          <button className="w-full bg-gray-900 text-white hover:bg-gray-900/10 hover:text-gray-900 focus:outline-none focus:ring-2 duration-500 focus:ring-gray-900 py-2 px-4 rounded-md mt-4">
-  Check out
-</button>
+
+          {/* Pass cart details to RazorpayCheckout */}
+          <RazorpayCheckout
+            totalAmount={total}
+            subtotal={subtotal}
+            cartItems={cartItems}
+            shippingCost={shippingCost}
+          />
         </div>
       </div>
     </div>
