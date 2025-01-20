@@ -116,4 +116,28 @@ const checkoutCart = async (userId) => {
   }
 };
 
-export { addToCart, getCart, removeFromCart, updateCart, checkoutCart };
+const removeAllFromCart = async (userId) => {
+  try {
+    const token = getToken(); // Fetch the JWT token dynamically
+    console.log(userId);
+    
+    const response = await axiosInstance.delete(
+      'http://localhost:5000/api/cart/emptycart', // URL of the backend endpoint
+      {
+        data: { userId }, // Send the userId inside the 'data' object
+        headers: {
+          'Authorization': `Bearer ${token}`, // Include token in the headers
+        },
+      }
+    );
+
+    console.log('All items removed from cart:', response.data);
+    return response.data; // Optionally return the updated cart data
+  } catch (error) {
+    console.error('Error removing items from cart:', error);
+    alert('An error occurred while removing items from the cart.');
+  }
+};
+
+
+export { addToCart, getCart,removeAllFromCart, removeFromCart, updateCart, checkoutCart };

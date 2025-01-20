@@ -5,6 +5,7 @@ import { addToWishlist, removeFromWishlist } from "../Apis/WistlistAPI";
 import { getLoggedInUserProfile } from "../Apis/userAPI";
 import Popup from "./popup";
 import { addToCart } from "../Apis/cartAPI";
+import RazorpayCheckout from "./RazorpayCheckout";
 
 function ProductDetails() {
   const location = useLocation();
@@ -190,9 +191,7 @@ function ProductDetails() {
 
           {/* Buttons */}
           <div className="mt-8 flex items-center gap-3">
-            <button className="bg-gray-900 text-white py-2 px-4 rounded-md w-52 hover:bg-gray-800">
-              Buy now
-            </button>
+
             <button
               onClick={() => {
                 handlecart(_id);
@@ -269,6 +268,8 @@ function ProductDetails() {
 
       {/* Show Popup outside of the button */}
       <Popup message={popupMessage} isVisible={isPopupVisible} />
+    
+      
     </section>
   );
 }
