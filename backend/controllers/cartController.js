@@ -115,6 +115,31 @@ const checkoutCart = async (req, res) => {
 };
 
 
+const removeAllFromCart = async (req, res) => {
+  try {
+    const { userId } = req.body;
+
+    // Find the cart for the given userId
+    const cart = await Cart.findOne({ userId });
+    if (!cart) {
+      return res.status(404).json({ message: 'Cart not found' });
+    }
+
+    // Clear all items from the cart
+    cart.items = [];
+
+    // Save the updated cart to the database
+    await cart.save();
+
+    // Send the updated cart as the response
+    res.json({ message: 'All items removed from cart', cart });
+  } catch (error) {
+    console.error('Error in removeAllFromCart:', error.message);
+    res.status(500).json({ error: error.message });
+  }
+};
+
+module.exports = { removeAllFromCart };
 
 
 
@@ -124,5 +149,6 @@ module.exports = {
   getCart,
   removeFromCart,
   updateCart,
-  checkoutCart
+  checkoutCart,
+  removeAllFromCart
 };

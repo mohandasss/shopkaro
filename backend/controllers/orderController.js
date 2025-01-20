@@ -1,15 +1,19 @@
-// controllers/orderController.js
 const Order = require('../models/Order');
 
 const placeOrder = async (req, res) => {
-  const { userId, items, totalAmount } = req.body;
+  const { userId, items, totalAmount, razorpay_payment_id, razorpay_order_id, razorpay_signature } = req.body;
+  
   try {
     const newOrder = new Order({
       userId,
       items,
       totalAmount,
       status: 'Pending',
+      razorpay_payment_id,  // Added razorpay payment ID
+      razorpay_order_id,     // Added razorpay order ID
+      razorpay_signature     // Added razorpay signature
     });
+
     await newOrder.save();
     res.status(201).json({ message: 'Order placed successfully', order: newOrder });
   } catch (error) {
@@ -25,6 +29,7 @@ const getUserOrders = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 const updateOrderStatus = async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -39,8 +44,6 @@ const updateOrderStatus = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
-
-
 
 module.exports = {
   placeOrder,
