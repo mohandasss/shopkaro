@@ -45,17 +45,20 @@ const addProduct = async (req, res) => {
 // Get All Products
 const getAllProducts = async (req, res) => {
   try {
-    // Destructure query parameters with defaults for page and limit
+    // Destructure query parameters with defaults for page, limit, and sort
     const page = parseInt(req.query.page) || 1; // Default to page 1
     const limit = parseInt(req.query.limit) || 6; // Default to 6 items per page
+    const sortBy = req.query.sortBy || 'name'; // Default to sorting by 'name'
+    const sortOrder = req.query.sortOrder === 'desc' ? -1 : 1; // Default to ascending order
 
     // Calculate the skip value based on page and limit
     const skip = (page - 1) * limit;
 
-    // Fetch products with pagination (using limit and skip)
+    // Fetch products with pagination and sorting
     const products = await Product.find()
       .skip(skip)
-      .limit(limit);
+      .limit(limit)
+      .sort({ [sortBy]: sortOrder }); // Apply sorting based on 'sortBy' and 'sortOrder'
 
     // Count the total number of products (for pagination UI)
     const totalProducts = await Product.countDocuments();
@@ -63,7 +66,7 @@ const getAllProducts = async (req, res) => {
     // Calculate total pages (use ceiling to get a whole number of pages)
     const totalPages = Math.ceil(totalProducts / limit);
 
-    // Send the response with products and pagination info
+    // Send the response with products, sorting, and pagination info
     res.json({
       products,
       currentPage: page,
