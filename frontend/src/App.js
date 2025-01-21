@@ -10,6 +10,7 @@ import ProductsPage from "./pages/ProductsPage";
 import ProductDetails from "./Components/Productsdetails";
 import WistlistPage from "./pages/WistlistPage";
 import PaymentsPage from "./pages/PaymentsPage";
+import SearchPage from "./pages/SearchPage";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/products/:id" element={<ProductDetails />} />
         <Route path="/wishlist" element={<WistlistPage />} />
         <Route path="/payments" element={<PaymentsPage />} />
+        <Route path="/search" element={<SearchPage />} />
         
       </Routes>
       <Footer />

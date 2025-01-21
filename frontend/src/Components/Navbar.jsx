@@ -1,64 +1,99 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from "react"
-import { Disclosure, Menu } from "@headlessui/react"
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline"
-import { AiFillHome, AiOutlineShoppingCart, AiOutlineHeart } from "react-icons/ai"
-import { FaProductHunt } from "react-icons/fa"
-import { useNavigate, Link } from "react-router-dom"
-import { getLoggedInUserProfile } from "../Apis/userAPI"
-import shopkaro from "../assets/preview.png"
-import me from "../assets/staticdp.jpg"
-import admin from "../assets/admin.jpg"
-import Popup from "./popup"
-import Loader from "./Loader"
-import ProfileModal from "./ProfileModal"
+import React, { useState, useEffect } from "react";
+import { Disclosure, Menu } from "@headlessui/react";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  AiFillHome,
+  AiOutlineShoppingCart,
+  AiOutlineHeart,
+} from "react-icons/ai";
+import { FaProductHunt } from "react-icons/fa";
+import { useNavigate, Link } from "react-router-dom";
+import { getLoggedInUserProfile } from "../Apis/userAPI";
+import shopkaro from "../assets/preview.png";
+import me from "../assets/staticdp.jpg";
+import admin from "../assets/admin.jpg";
+import Popup from "./popup";
+import Loader from "./Loader";
+import ProfileModal from "./ProfileModal";
+import { Search } from "lucide-react";
+import { searchProducts } from "../Apis/productAPI";
 
 const Navbar = () => {
-  const navigate = useNavigate()
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-  const [popupVisible, setPopupVisible] = useState(false)
-  const [profile, setProfile] = useState(null)
-  const [modal, setModal] = useState(false)
+  const [searchQuery, setSearchQuery] = useState("");
+  const [products, setProducts] = useState([]);
+  const navigate = useNavigate();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [popupVisible, setPopupVisible] = useState(false);
+  const [profile, setProfile] = useState(null);
+  const [error, setError] = useState(null);
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const profile = await getLoggedInUserProfile()
-        setUser(profile)
+        const profile = await getLoggedInUserProfile();
+        setUser(profile);
       } catch (error) {
-        setUser(null)
+        setUser(null);
       } finally {
-        setLoading(false)
+        setLoading(false);
       }
-    }
+    };
 
-    fetchUserProfile()
-  }, [])
+    fetchUserProfile();
+  }, []);
+
+  const handleSearch = async () => {
+    if (searchQuery.trim()) {
+      setLoading(true);
+      setError(null);
+      try {
+        const results = await searchProducts(searchQuery);
+        console.log(results.products);
+  
+        if (results.products.length > 0) {
+          setProducts(results.products);
+          navigate('/search', { state: { product: results.products } });
+        } else {
+          setError("No products found.");
+        }
+      } catch (err) {
+        console.error(err);  // Log the error for debugging
+        setError("Failed to fetch products. Please try again.");
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setError("Please enter a search query.");
+    }
+  };
+  
 
   const logout = () => {
-    localStorage.removeItem("token")
-    setUser(null)
-    setPopupVisible(true)
+    localStorage.removeItem("token");
+    setUser(null);
+    setPopupVisible(true);
     setTimeout(() => {
-      setPopupVisible(false)
-      navigate("/login")
-    }, 2000)
-  }
+      setPopupVisible(false);
+      navigate("/login");
+    }, 2000);
+  };
 
   const handleProfile = async () => {
-    const profile = await getLoggedInUserProfile()
-    setProfile(profile)
-    setModal(true)
-  }
+    const profile = await getLoggedInUserProfile();
+    setProfile(profile);
+    setModal(true);
+  };
 
   if (loading) {
     return (
       <div className="h-screen flex items-center justify-center bg-gray-900 text-white">
         <Loader />
       </div>
-    )
+    );
   }
 
   return (
@@ -71,15 +106,36 @@ const Navbar = () => {
                 <div className="flex">
                   <div className="flex-shrink-0 flex items-center">
                     <Link to="/">
-                      <img className="h-10 w-auto" src={shopkaro || "/placeholder.svg"} alt="ShopKaro" />
+                      <img
+                        className="h-10 w-auto"
+                        src={shopkaro || "/placeholder.svg"}
+                        alt="ShopKaro"
+                      />
                     </Link>
                   </div>
+
                   <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
                     {[
-                      { name: "Home", href: "/", icon: <AiFillHome className="mr-1" /> },
-                      { name: "Products", href: "/products", icon: <FaProductHunt className="mr-1" /> },
-                      { name: "Wishlist", href: "/wishlist", icon: <AiOutlineHeart className="mr-1" /> },
-                      { name: "Cart", href: "/cart", icon: <AiOutlineShoppingCart className="mr-1" /> },
+                      {
+                        name: "Home",
+                        href: "/",
+                        icon: <AiFillHome className="mr-1" />,
+                      },
+                      {
+                        name: "Products",
+                        href: "/products",
+                        icon: <FaProductHunt className="mr-1" />,
+                      },
+                      {
+                        name: "Wishlist",
+                        href: "/wishlist",
+                        icon: <AiOutlineHeart className="mr-1" />,
+                      },
+                      {
+                        name: "Cart",
+                        href: "/cart",
+                        icon: <AiOutlineShoppingCart className="mr-1" />,
+                      },
                     ].map((item) => (
                       <Link
                         key={item.name}
@@ -90,6 +146,28 @@ const Navbar = () => {
                         {item.name}
                       </Link>
                     ))}
+                  </div>
+                </div>
+                <div className="relative">
+                  <div
+                    className="flex items-center mt-2.5 border rounded-full overflow-hidden transition-all duration-300 ease-in-out
+                           w-64 bg-white"
+                  >
+                    <Search className="h-10  text-gray-500 transition-all duration-300 ease-in-out ml-3" />
+                    <input
+                      type="text"
+                      placeholder="Search..."
+                      className="w-full py-2 px-3 outline-none bg-transparent transition-all duration-300 ease-in-out 
+                             opacity-100"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <button
+                      onClick={handleSearch}
+                      className=" text-white p-2  bg-blue-500 rounded-3xl  "
+                    >
+                      Search
+                    </button>
                   </div>
                 </div>
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -162,10 +240,26 @@ const Navbar = () => {
             <Disclosure.Panel className="sm:hidden">
               <div className="space-y-1 px-2 pb-3 pt-2">
                 {[
-                  { name: "Home", href: "/", icon: <AiFillHome className="mr-2" /> },
-                  { name: "Products", href: "/products", icon: <FaProductHunt className="mr-2" /> },
-                  { name: "Wishlist", href: "/wishlist", icon: <AiOutlineHeart className="mr-2" /> },
-                  { name: "Cart", href: "/cart", icon: <AiOutlineShoppingCart className="mr-2" /> },
+                  {
+                    name: "Home",
+                    href: "/",
+                    icon: <AiFillHome className="mr-2" />,
+                  },
+                  {
+                    name: "Products",
+                    href: "/products",
+                    icon: <FaProductHunt className="mr-2" />,
+                  },
+                  {
+                    name: "Wishlist",
+                    href: "/wishlist",
+                    icon: <AiOutlineHeart className="mr-2" />,
+                  },
+                  {
+                    name: "Cart",
+                    href: "/cart",
+                    icon: <AiOutlineShoppingCart className="mr-2" />,
+                  },
                 ].map((item) => (
                   <Disclosure.Button
                     key={item.name}
@@ -179,6 +273,7 @@ const Navbar = () => {
                     </span>
                   </Disclosure.Button>
                 ))}
+
                 {!user && (
                   <div className="mt-4 space-y-2">
                     <Disclosure.Button
@@ -214,8 +309,7 @@ const Navbar = () => {
         />
       )}
     </>
-  )
-}
+  );
+};
 
-export default Navbar
-
+export default Navbar;

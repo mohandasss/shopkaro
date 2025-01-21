@@ -5,7 +5,8 @@ import { addToWishlist, removeFromWishlist } from "../Apis/WistlistAPI";
 import { getLoggedInUserProfile } from "../Apis/userAPI";
 import Popup from "./popup";
 import { addToCart } from "../Apis/cartAPI";
-import RazorpayCheckout from "./RazorpayCheckout";
+import { useEffect } from "react";
+
 
 function ProductDetails() {
   const location = useLocation();
@@ -13,13 +14,18 @@ function ProductDetails() {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const { _id, imageURL, reviews, name, price, description, rating, quantity } =
-    location.state;
+    location?.state || {};
   const [popupMessage, setPopupMessage] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [currentQuantity, setCurrentQuantity] = useState(1);
 
-  console.log(location.state._id);
 
+
+  useEffect(()=>{
+    console.log(location);
+    
+  },[])
+  
   // Handle case where state is missing (e.g., user accesses directly via URL)
   if (!location.state) {
     return (

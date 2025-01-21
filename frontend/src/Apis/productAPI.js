@@ -32,6 +32,8 @@ const getAuthToken = () => {
 export  const searchProducts = async (query) => {
   try {
     const response = await axiosInstance.get(`/search?query=${query}`);
+    console.log(response.data);
+    
     return response.data;
   } catch (error) {
     console.error('Error searching products:', error);
