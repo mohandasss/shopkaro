@@ -163,6 +163,8 @@ const search = async (req, res) => {
   }
 };
 
+// search API
+
 module.exports = {
   addProduct,
   getAllProducts,
