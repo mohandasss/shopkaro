@@ -146,7 +146,7 @@ const search = async (req, res) => {
   }
 
   try {
-    // Search Products
+    // Search Productss
     const products = await Product.find({
       name: new RegExp(query, "i")
     });
