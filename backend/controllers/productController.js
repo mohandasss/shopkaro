@@ -146,17 +146,17 @@ const search = async (req, res) => {
   }
 
   try {
-    // Search Productss
+    
     const products = await Product.find({
       name: new RegExp(query, "i")
     });
 
-    // Search Categories
+    
     const categories = await Category.find({
       name: new RegExp(query, "i")
     });
 
-    // Return combined results
+   
     res.json({ products, categories });
   } catch (error) {
     res.status(500).json({ error: error.message });
