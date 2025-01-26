@@ -36,7 +36,6 @@ const placeOrder = async ({userId, items, totalAmount, razorpay_payment_id, razo
       },
     });
 
-    console.log('Order placed:', response.data);
     return response.data; // Returns the created order details
   } catch (error) {
     console.error('Error placing order:', error);
@@ -69,7 +68,7 @@ const updateOrderStatus = async (orderId, status) => {
         'Authorization': `Bearer ${token}`, // Add token dynamically
       },
     });
-    console.log('Order status updated:', response.data);
+   
     return response.data; // Returns the updated order details
   } catch (error) {
     console.error('Error updating order status:', error);

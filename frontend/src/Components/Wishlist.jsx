@@ -39,11 +39,10 @@ const Wishlist = () => {
         // Update local state immediately after successful removal
         setwishdata((prev) => prev.filter((item) => item._id !== productId)); // Filter out the removed product
       } else {
-        console.log("Failed to remove product");
+       
       }
       setIsPopupVisible(true);
-      console.log("Removed product with id:", productId, "for userId:", userId);
-      console.log(response);
+      
 
       // Reload the page after 0.5 seconds
       setTimeout(() => {

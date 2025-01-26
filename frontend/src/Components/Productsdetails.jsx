@@ -21,10 +21,7 @@ function ProductDetails() {
 
 
 
-  useEffect(()=>{
-    console.log(location);
-    
-  },[])
+  
   
   // Handle case where state is missing (e.g., user accesses directly via URL)
   if (!location.state) {
@@ -95,7 +92,7 @@ function ProductDetails() {
       const userProfile = await getLoggedInUserProfile();
       const userId = userProfile._id;
       const response = await addToCart(userId, id, currentQuantity);
-      console.log(currentQuantity);
+     
       
       setPopupMessage("Item added to cart!");
       setIsPopupVisible(true);

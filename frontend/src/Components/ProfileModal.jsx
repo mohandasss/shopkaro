@@ -13,7 +13,7 @@ const ProfileModal = ({ name, address, email }) => {
 
   const handleSave = () => {
     // Logic for saving the updated profile (e.g., API call)
-    console.log("Saved profile:", { editedName, editedAddress, editedEmail });
+   
     setOpen(false);
   };
 

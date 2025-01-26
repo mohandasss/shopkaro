@@ -52,7 +52,7 @@ const Navbar = () => {
       setError(null);
       try {
         const results = await searchProducts(searchQuery);
-        console.log(results.products);
+       
   
         if (results.products.length > 0) {
           setProducts(results.products);

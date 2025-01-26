@@ -18,7 +18,7 @@ const LoginPage = () => {
       setLoading(true); // Start loading when submitting
       const loginData = { email, password };
       const response = await login(loginData);
-      console.log(response); // Optional: log the response from the login API
+     
   
       // Fetch the user profile after login
       const profile = await getLoggedInUserProfile();

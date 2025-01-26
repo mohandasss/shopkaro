@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 const ProductCard = ({ product }) => {
   const { _id, imageURL, name, price, description, quantity, rating, reviews } =
     product;
-    console.log(product);
+   
     
 
   return (
@@ -107,7 +107,7 @@ const ProductSections = () => {
     const fetchProducts = async () => {
       try {
         const response = await getAllProductsAtOnce();
-        console.log(response);
+      
 
         setProducts(response.products);
       } catch (error) {

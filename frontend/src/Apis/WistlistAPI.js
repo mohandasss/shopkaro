@@ -12,7 +12,7 @@ export const addToWishlist = async (userId, productId) => {
         Authorization: `Bearer ${token}`, // Pass the token for authentication
       },
     });
-    console.log(response.data)
+   
     return response.data;
   } catch (error) {
     console.error('Error adding product to wishlist:', error);
@@ -32,7 +32,7 @@ export const removeFromWishlist = async (userId, productId) => {
       data: payload, // Pass the payload in the body
     });
 
-    console.log('Item removed from wishlist:', response.data);
+    
     return response.data;
   } catch (error) {
     console.error('Error removing product from wishlist:', error.response?.data || error.message);
@@ -50,7 +50,7 @@ export const getWishlist = async (userId) => {
       },
     });
 
-    console.log('Fetched wishlist:', response.data);
+   
     return response.data;
   } catch (error) {
     console.error('Error fetching wishlist:', error.response?.data || error.message);

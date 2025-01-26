@@ -7,7 +7,7 @@ import { removeAllFromCart } from "../Apis/cartAPI";
 const RazorpayCheckout = ({ totalAmount, cartItems }) => {
   const [razorpayLoaded, setRazorpayLoaded] = useState(false);
   const [loading, setLoading] = useState(false);
-  console.log(cartItems);
+ 
 
   // Dynamically load Razorpay script
   useEffect(() => {
@@ -63,13 +63,13 @@ const RazorpayCheckout = ({ totalAmount, cartItems }) => {
               razorpay_order_id,
               razorpay_signature,
             };
-            console.log("Order Data to be sent:", orderData);
+            
 
             const orderResponse = await placeOrder(orderData);
-            console.log("Order placed:", orderResponse.data);
+      
             
             const emptycart = await removeAllFromCart(userdata._id);
-            console.log(emptycart);
+          
 
             window.location.href = "/";
           } catch (error) {

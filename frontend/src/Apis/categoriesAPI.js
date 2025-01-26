@@ -22,7 +22,7 @@ const getProductsById = async(categoriesId)=>{
             try {
                 const categories =await axiosInstance.get(`/${categoriesId}`)
                 
-                console.log(categories.data);
+                
                 return categories.data
             } catch (error) {
                

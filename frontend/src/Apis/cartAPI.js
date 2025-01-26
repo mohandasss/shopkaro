@@ -23,10 +23,10 @@ const addToCart = async (userId, productId, quantity) => {
 
   try {
     const token = getToken(); // Fetch the JWT token dynamically
-    console.log(token);
+   
     
     const payload = { userId, productId, quantity };
-    console.log(payload);
+    
     
     
 
@@ -35,7 +35,7 @@ const addToCart = async (userId, productId, quantity) => {
         'Authorization': `Bearer ${token}`,
       }
     });
-    console.log('Item added to cart:', response.data);
+    
     return response.data; // Returns updated cart
   } catch (error) {
     console.error('Error adding item to cart:', error);
@@ -91,7 +91,7 @@ const updateCart = async (userId, productId, quantity) => {
         },
       }
     );
-    console.log('Cart updated:', response.data);
+    
     return response.data; // Returns updated cart
   } catch (error) {
     console.error('Error updating cart:', error);
@@ -108,7 +108,7 @@ const checkoutCart = async (userId) => {
         'Authorization': `Bearer ${token}`, // Add token dynamically
       },
     });
-    console.log('Checkout successful:', response.data);
+    
     return response.data; // Returns order details
   } catch (error) {
     console.error('Error during checkout:', error);
@@ -119,7 +119,7 @@ const checkoutCart = async (userId) => {
 const removeAllFromCart = async (userId) => {
   try {
     const token = getToken(); // Fetch the JWT token dynamically
-    console.log(userId);
+    
     
     const response = await axiosInstance.delete(
       'http://localhost:5000/api/cart/emptycart', // URL of the backend endpoint
@@ -131,7 +131,7 @@ const removeAllFromCart = async (userId) => {
       }
     );
 
-    console.log('All items removed from cart:', response.data);
+    
     return response.data; // Optionally return the updated cart data
   } catch (error) {
     console.error('Error removing items from cart:', error);

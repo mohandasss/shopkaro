@@ -32,7 +32,7 @@ const getAuthToken = () => {
 export  const searchProducts = async (query) => {
   try {
     const response = await axiosInstance.get(`/search?query=${query}`);
-    console.log(response.data);
+    
     
     return response.data;
   } catch (error) {
@@ -88,7 +88,7 @@ export const getCategoryById = async (categoryId) => {
   if (!categoryId) throw new Error('Category ID is required');
   try {
     const response = await axiosOK.get(`/${categoryId}`);
-    console.log(response.data);
+    
     
     return response.data;
   } catch (error) {

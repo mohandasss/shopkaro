@@ -27,7 +27,7 @@ const RegisterPage = () => {
     try {
       const userData = { name, email, password, address };
       const response = await register(userData);
-      console.log(response);
+  
 
       setPopupVisible(true); // Show popup on success
       setTimeout(() => {
@@ -35,7 +35,7 @@ const RegisterPage = () => {
         navigate('/login');
       }, 2000);
     } catch (error) {
-      console.log(error);
+    
       setloader(false);
       setButtonText('Register');
     }
