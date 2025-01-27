@@ -175,7 +175,7 @@ const Navbar = () => {
 
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
                 {user?.role === "admin" && (
-                  <button className="px-3 py-2 m-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+                  <button onClick={()=> navigate("/adminpanel")} className="px-3 py-2 m-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
                     Admin
                   </button>
                 )}

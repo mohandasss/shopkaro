@@ -11,6 +11,7 @@ import ProductDetails from "./Components/Productsdetails";
 import WistlistPage from "./pages/WistlistPage";
 import PaymentsPage from "./pages/PaymentsPage";
 import SearchPage from "./pages/SearchPage";
+import AdminPanelPage from "./pages/AdminPanelPage";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
         <Route path="/wishlist" element={<WistlistPage />} />
         <Route path="/payments" element={<PaymentsPage />} />
         <Route path="/search" element={<SearchPage />} />
+        <Route path="/adminpanel" element={<AdminPanelPage />} />
         
       </Routes>
       <Footer />
