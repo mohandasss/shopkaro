@@ -20,6 +20,7 @@ const getLoggedInUserProfile = async () => {
       },
     });
     
+    console.log();
     
     return response.data;  // Return user profile data
   } catch (error) {

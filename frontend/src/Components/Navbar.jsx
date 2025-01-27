@@ -35,6 +35,8 @@ const Navbar = () => {
     const fetchUserProfile = async () => {
       try {
         const profile = await getLoggedInUserProfile();
+        console.log(profile.role);
+
         setUser(profile);
       } catch (error) {
         setUser(null);
@@ -52,16 +54,15 @@ const Navbar = () => {
       setError(null);
       try {
         const results = await searchProducts(searchQuery);
-       
-  
+
         if (results.products.length > 0) {
           setProducts(results.products);
-          navigate('/search', { state: { product: results.products } });
+          navigate("/search", { state: { product: results.products } });
         } else {
           setError("No products found.");
         }
       } catch (err) {
-        console.error(err);  // Log the error for debugging
+        console.error(err); // Log the error for debugging
         setError("Failed to fetch products. Please try again.");
       } finally {
         setLoading(false);
@@ -70,7 +71,6 @@ const Navbar = () => {
       setError("Please enter a search query.");
     }
   };
-  
 
   const logout = () => {
     localStorage.removeItem("token");
@@ -170,7 +170,15 @@ const Navbar = () => {
                     </button>
                   </div>
                 </div>
+
+                
+
                 <div className="hidden sm:ml-6 sm:flex sm:items-center">
+                {user?.role === "admin" && (
+                  <button className="px-3 py-2 m-2 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+                    Admin
+                  </button>
+                )}
                   {!user ? (
                     <div className="flex space-x-4">
                       <button
