@@ -105,6 +105,20 @@ const getTotalSales = async () => {
   }
 };
 
+
+
+ const getOrderById = async (orderId) => {
+  try {
+    const response = await axiosInstance.get(`admin/orders/${orderId}`,);
+    console.log(response.data);
+      
+    return response.data; // Return the order data
+  } catch (error) {
+    console.error('Error fetching order:', error);
+    throw new Error(error.response?.data?.message || 'An error occurred');
+  }
+};
+
 export {
   placeOrder,
   getUserOrders,
@@ -112,4 +126,5 @@ export {
   getAllOrders,
   getTotalOrdersCount,
   getTotalSales,
+  getOrderById
 };

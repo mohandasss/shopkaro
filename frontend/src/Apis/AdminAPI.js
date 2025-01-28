@@ -33,7 +33,7 @@ const fetchDashboardData = async () => {
 const fetchTotalUsers = async () => {
     try {
       const response = await axiosInstance.get('/users');
-      return response.data.length; // Assuming the response is an array of users
+      return response.data; // Assuming the response is an array of users
     } catch (error) {
       console.error('Error fetching users:', error);
       throw error;

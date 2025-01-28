@@ -2,6 +2,8 @@
 
 import React, { useState } from "react";
 import Dashboard from "./Dashboard";
+import SearchOrder from "./SearchOrder"; // Import the new component
+import UserTab from "./UserTab";
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -30,11 +32,41 @@ export default function Admin() {
             >
               Dashboard
             </button>
+            <button
+              className={`px-4 py-2 text-sm font-medium ml-4 ${
+                activeTab === "searchOrder"
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+              onClick={() => setActiveTab("searchOrder")}
+            >
+              Search Order
+            </button>
+            <button
+              className={`px-4 py-2 text-sm font-medium ml-4 ${
+                activeTab === "userTab"
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+              onClick={() => setActiveTab("userTab")}
+            >
+              Users
+            </button>
           </div>
 
           {/* Tabs Content */}
-          <div className="mt-6">
-            {activeTab === "dashboard" && <Dashboard />}
+          <div className="mt-6 flex justify-center gap-4">
+            <div
+              className={`w-full ${
+                activeTab === "dashboard" || activeTab === "searchOrder"
+                  ? "md:w-full"
+                  : "md:w-2/3"
+              } flex justify-center`}
+            >
+              {activeTab === "dashboard" && <Dashboard />}
+              {activeTab === "searchOrder" && <SearchOrder />}
+              {activeTab === "userTab" && <UserTab />}
+            </div>
           </div>
         </div>
       </main>

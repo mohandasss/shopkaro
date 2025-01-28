@@ -2,12 +2,13 @@
 
 import React, { useEffect, useState } from "react";
 import { fetchDashboardData, fetchTotalUsers } from "../Apis/AdminAPI";
-import { getTotalSales } from "../Apis/orderAPI";
+import { getTotalSales,getAllOrders } from "../Apis/orderAPI";
 import OrderList from "./OrderList";
 export default function Dashboard() {
   const [dashboardData, setDashboardData] = useState(null);
   const [totalusers, settotalusers] = useState(null);
   const [totalsales, settotalsales] = useState(null);
+  const [complete, setcomplete] = useState(null);
 
   const [error, setError] = useState(null);
 
@@ -17,9 +18,11 @@ export default function Dashboard() {
         const data = await fetchDashboardData();
         const TotalUsers = await fetchTotalUsers();
         const sales = await getTotalSales();
-
+         const completedorders = await getAllOrders();
+         console.log(completedorders[0].status);
+         
         settotalsales(sales.totalSales);
-
+        setcomplete(completedorders)
         setDashboardData(data);
         console.log(data);
         settotalusers(TotalUsers);
@@ -47,33 +50,38 @@ export default function Dashboard() {
 
   return (
     <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-2">
-            Total Orders
-          </h2>
-          <p className="text-4xl font-bold text-blue-600">
-            {dashboardData.totalOrders}
-          </p>
-        </div>
-
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-2">
-            Active Users
-          </h2>
-          <p className="text-4xl font-bold text-green-600">{totalusers}</p>
-        </div>
-
-        <div className="bg-white shadow rounded-lg p-6">
-          <h2 className="text-lg font-semibold text-gray-700 mb-2">
-            Total Revenue
-          </h2>
-          <p className="text-4xl font-bold text-purple-600">₹{totalsales}</p>
-        </div>
-      </div>
-
-      {/* The OrderList component */}
-      <OrderList />
+  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-6">
+    {/* Total Orders Card */}
+    <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between">
+      <h2 className="text-lg font-semibold text-gray-700 mb-3">Total Orders</h2>
+      <p className="text-3xl font-bold text-blue-600">{dashboardData.totalOrders}</p>
     </div>
+
+    {/* Active Users Card */}
+    <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between">
+      <h2 className="text-lg font-semibold text-gray-700 mb-3">Active Users</h2>
+      <p className="text-3xl font-bold text-green-600">{totalusers.length}</p>
+    </div>
+
+    {/* Total Revenue Card */}
+    <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between">
+      <h2 className="text-lg font-semibold text-gray-700 mb-3">Total Revenue</h2>
+      <p className="text-3xl font-bold text-purple-600">₹{totalsales}</p>
+    </div>
+    <div className="bg-white shadow-lg rounded-lg p-6 flex flex-col justify-between">
+  <h2 className="text-lg font-semibold text-gray-700 mb-3">Orders Completed</h2>
+  <p className="text-3xl font-bold text-green-600">
+    {complete.filter(order => order.status === "Completed").length}
+  </p>
+</div>
+
+  </div>
+
+  {/* The OrderList component */}
+  <div className="mt-8">
+    <OrderList />
+  </div>
+</div>
+
   );
 }
