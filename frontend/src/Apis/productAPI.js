@@ -42,20 +42,40 @@ export  const searchProducts = async (query) => {
 };
 
 // Add a new Product
-export  const addProduct = async (productData) => {
-  if (!productData) throw new Error('Product data is required');
+export const addProduct = async (productData) => {
   try {
-    const response = await axiosInstance.post('/add', productData, {
+    const token = getAuthToken(); // Use getAuthToken() for consistency
+
+    if (!token) throw new Error('Authentication required. Please log in.');
+
+    if (!productData.image || !(productData.image instanceof File)) {
+      throw new Error('Invalid image file. Please upload a valid image.');
+    }
+
+    const formData = new FormData();
+    formData.append('image', productData.image); // Cloudinary expects `image`
+    formData.append('name', productData.name);
+    formData.append('category', productData.category);
+    formData.append('description', productData.description);
+    formData.append('price', productData.price);
+    formData.append('quantity', productData.quantity);
+    formData.append('rating', productData.rating);
+
+    const response = await axiosInstance.post('/add', formData, {
       headers: {
-        Authorization: `Bearer ${getAuthToken()}`,
+        'Content-Type': 'multipart/form-data',
+        Authorization: `Bearer ${token}`,
       },
     });
+
     return response.data;
   } catch (error) {
-    console.error('Error adding product:', error);
-    throw new Error('Unable to add product');
+    console.error('Error adding product:', error.response?.data || error.message);
+    throw new Error(error.response?.data?.message || 'Failed to add product');
   }
 };
+
+
 
 // Get All Products
 export  const getAllProducts = async () => {

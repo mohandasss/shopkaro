@@ -12,6 +12,7 @@ import WistlistPage from "./pages/WistlistPage";
 import PaymentsPage from "./pages/PaymentsPage";
 import SearchPage from "./pages/SearchPage";
 import AdminPanelPage from "./pages/AdminPanelPage";
+import Orderpage from "./pages/Orderpage";
 
 function App() {
   return (
@@ -28,7 +29,7 @@ function App() {
         <Route path="/payments" element={<PaymentsPage />} />
         <Route path="/search" element={<SearchPage />} />
         <Route path="/adminpanel" element={<AdminPanelPage />} />
-        
+        <Route path="/orders" element={<Orderpage />} />
       </Routes>
       <Footer />
     </div>

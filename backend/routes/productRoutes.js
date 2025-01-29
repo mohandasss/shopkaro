@@ -6,7 +6,7 @@ const router = express.Router();
 
 // Product management
 router.get('/search', search);
-router.post('/add', authMiddleware, authorizeRoles('admin'), addProduct);  // Removed 'upload.single()'
+router.post('/add', authMiddleware, authorizeRoles('admin'), addProduct);  
 router.get('/', getAllProducts);
 router.get("/getall",getAllProductsAtOnce)
 router.get('/:id', getProductById);

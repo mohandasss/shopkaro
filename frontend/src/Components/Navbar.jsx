@@ -19,7 +19,7 @@ import Loader from "./Loader";
 import ProfileModal from "./ProfileModal";
 import { Search } from "lucide-react";
 import { searchProducts } from "../Apis/productAPI";
-
+import { FaShoppingBag } from "react-icons/fa";
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
@@ -136,6 +136,11 @@ const Navbar = () => {
                         href: "/cart",
                         icon: <AiOutlineShoppingCart className="mr-1" />,
                       },
+                      {
+                        name: "Orders",
+                        href: "/orders",
+                        icon: <FaShoppingBag className="mr-1" />,
+                      }
                     ].map((item) => (
                       <Link
                         key={item.name}
@@ -268,6 +273,11 @@ const Navbar = () => {
                     href: "/cart",
                     icon: <AiOutlineShoppingCart className="mr-2" />,
                   },
+                  {
+                    name: "Orders",
+                    href: "/orders",
+                    icon: <FaShoppingBag className="mr-1" />,
+                  }
                 ].map((item) => (
                   <Disclosure.Button
                     key={item.name}

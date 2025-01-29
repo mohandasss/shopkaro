@@ -31,9 +31,7 @@ const UserTab = () => {
 
           <p className="text-sm text-gray-600">Role: {user.role}</p>
           <p className="text-sm text-gray-600">Address: {user.address}</p>
-          <p className="text-sm text-gray-600">
-            Order History: {user.orderHistory.length > 0 ? user.orderHistory.length : 'No orders yet'}
-          </p>
+          
         </div>
       ))}
     </div>

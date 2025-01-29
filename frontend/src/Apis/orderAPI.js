@@ -53,7 +53,7 @@ const placeOrder = async ({ userId, items, totalAmount, razorpay_payment_id, raz
 // Function to get the orders for a specific user
 const getUserOrders = async (userId) => {
   try {
-    const response = await axiosInstance.get(`/user/${userId}`); // Use the correct path
+    const response = await axiosInstance.get(`/${userId}`); // Use the correct path
     return response.data; // Returns the user's orders
   } catch (error) {
     console.error('Error fetching orders:', error);
