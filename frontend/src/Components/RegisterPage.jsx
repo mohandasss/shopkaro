@@ -1,43 +1,40 @@
-import { React, useState } from 'react';
+import { React, useState } from "react";
 import icon1 from "../assets/preview.png";
 import { Link, useNavigate } from "react-router-dom";
 import { register } from "../Apis/authAPI";
-import Popup from './popup';
-import Loader from './Loader';
+import Popup from "./popup";
+import Loader from "./Loader";
 
 const RegisterPage = () => {
-  const [name, setname] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [address, setaddress] = useState('');
+  const [name, setname] = useState("");
+  const [phone, setphone] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [address, setaddress] = useState("");
   const [loader, setloader] = useState(false);
-  const [buttonText, setButtonText] = useState('Register'); // For button text control
+  const [buttonText, setButtonText] = useState("Register"); // For button text control
   const navigate = useNavigate(); // For redirection
   const [popupVisible, setPopupVisible] = useState(false);
-
-
-  
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setloader(true);
-    setButtonText('Loading...');
+    setButtonText("Loading...");
 
     try {
-      const userData = { name, email, password, address };
-      const response = await register(userData);
-  
+      const userData = { name, phone, email, password, address };
+      console.log(userData);
+      
+      await register(userData);
 
       setPopupVisible(true); // Show popup on success
       setTimeout(() => {
         setPopupVisible(false); // Hide popup after 3 seconds
-        navigate('/login');
+        navigate("/login");
       }, 2000);
     } catch (error) {
-    
       setloader(false);
-      setButtonText('Register');
+      setButtonText("Register");
     }
   };
 
@@ -54,15 +51,11 @@ const RegisterPage = () => {
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
           <form onSubmit={handleSubmit} method="POST" className="space-y-6">
             {/* Name input */}
-             {/* Profile Picture Input */}
-          <div>
-            
-            <div className="mt-2">
-              
-            </div>
-          </div>
+            {/* Profile Picture Input */}
             <div>
-              
+              <div className="mt-2"></div>
+            </div>
+            <div>
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="name"
@@ -81,6 +74,33 @@ const RegisterPage = () => {
                   autoComplete="email"
                   className="block p-1 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                   onChange={(e) => setname(e.target.value)}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label
+                htmlFor="phone"
+                className="block text-sm/6 font-medium text-gray-900"
+              ></label>
+              <div className="flex items-center justify-between">
+                <label
+                  htmlFor="phone"
+                  className="block text-sm/6 font-medium text-gray-900"
+                >
+                  Phone Number
+                </label>
+                <div className="text-sm"></div>
+              </div>
+              <div className="mt-2">
+                <input
+                  id="phone"
+                  name="phone"
+                  type="phone"
+                  required
+                  autoComplete="phone"
+                  onChange={(e) => setphone(e.target.value)}
+                  className="block p-1 w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm/6"
                 />
               </div>
             </div>
@@ -173,12 +193,11 @@ const RegisterPage = () => {
               >
                 {loader ? (
                   <div
-                  className="inline-block h-8 w-8 animate-spinner-grow rounded-full bg-current align-[-0.125em] text-surface opacity-100 motion-reduce:animate-spinner-grow dark:text-white"
-                  role="status"
-                >
-                  <Loader/>
-                </div>
-                
+                    className="inline-block h-8 w-8 animate-spinner-grow rounded-full bg-current align-[-0.125em] text-surface opacity-100 motion-reduce:animate-spinner-grow dark:text-white"
+                    role="status"
+                  >
+                    <Loader />
+                  </div>
                 ) : (
                   buttonText
                 )}
@@ -190,10 +209,7 @@ const RegisterPage = () => {
           <Link to={"/login"}>
             <p className="mt-10 text-center text-sm/6 text-gray-500">
               Already a member?{" "}
-              <a
-                
-                className="font-semibold text-indigo-600 hover:text-indigo-500"
-              >
+              <a className="font-semibold text-indigo-600 hover:text-indigo-500">
                 Signin here!
               </a>
             </p>
@@ -201,13 +217,8 @@ const RegisterPage = () => {
         </div>
       </div>
       {popupVisible && (
-        <Popup
-        message={"Sucessfully Registered"}
-        isVisible={true}
-        />
+        <Popup message={"Sucessfully Registered"} isVisible={true} />
       )}
-
-
     </>
   );
 };
