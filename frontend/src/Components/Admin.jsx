@@ -5,6 +5,7 @@ import Dashboard from "./Dashboard";
 import SearchOrder from "./SearchOrder"; // Import the new component
 import UserTab from "./UserTab";
 import AddProduct from "./AddProduct";
+import Products from "./Products";
 
 export default function Admin() {
   const [activeTab, setActiveTab] = useState("dashboard");
@@ -63,6 +64,16 @@ export default function Admin() {
             >
               AddProduct
             </button>
+            <button
+              className={`px-4 py-2 text-sm font-medium ml-4 ${
+                activeTab === "Products"
+                  ? "text-blue-600 border-b-2 border-blue-600"
+                  : "text-gray-600 hover:text-gray-900"
+              }`}
+              onClick={() => setActiveTab("Products")}
+            >
+              Products
+            </button>
           </div>
 
           {/* Tabs Content */}
@@ -78,6 +89,7 @@ export default function Admin() {
               {activeTab === "searchOrder" && <SearchOrder />}
               {activeTab === "userTab" && <UserTab />}
               {activeTab === "AddProduct" && <AddProduct />}
+              {activeTab === "Products" && <Products />}
             </div>
           </div>
         </div>
