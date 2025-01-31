@@ -8,21 +8,23 @@ const userSchema = new mongoose.Schema({
     required: true, 
     unique: true, 
     default: function () { return this._id; } 
-  },
+  }
+  ,
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  phoneNumber: { 
-    type: String, 
-    required: true, 
-    unique: true, 
-    validate: {
-      validator: function(v) {
-        return /\d{10}/.test(v); // Ensures the phone number is 10 digits long
-      },
-      message: props => `${props.value} is not a valid phone number!`
-    }
-  },
+  phone: { 
+  type: String, 
+  required: true, 
+  unique: true, 
+  validate: {
+    validator: function(v) {
+      return /\d{10}/.test(v); 
+    },
+    message: props => `${props.value} is not a valid phone number!`
+  }
+}
+,
   role: { type: String, default: 'customer' },
   address: { type: String },
   orderHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Order' }],

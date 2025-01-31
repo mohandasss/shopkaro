@@ -4,43 +4,49 @@ const jwt = require('jsonwebtoken');
 
 // Register User
 const registerUser = async (req, res) => {
-  const { name, email, password, address, role, phone } = req.body;
-  console.log(phone);
-  const phoneNumber  = phone.toString();
-
-  if (!name || !email || !password || !phone) {
-    return res.status(400).json({ error: 'Please provide all required fields' });
-  }
-
   try {
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ error: 'Email already registered' });
+   
+
+    const { name, email, password, address, role, phone } = req.body;
+
+    // Check if any required field is missing
+    if (!name || !email || !password || !phone) {
+      console.log("Missing required fields"); // Debug missing fields
+      return res.status(400).json({ error: "Please provide all required fields" });
     }
 
-    const userRole = role || 'customer';
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      console.log("Email already registered"); // Debug duplicate email
+      return res.status(400).json({ error: "Email already registered" });
+    }
 
+    const userRole = role || "customer";
     const newUser = await User.create({
       name,
       email,
       password,
       address,
-      phoneNumber, 
+      phone,
       role: userRole,
     });
 
+    console.log("User registered successfully:", newUser);
+
     res.status(201).json({
-      message: 'User registered successfully',
+      message: "User registered successfully",
       user: {
         name: newUser.name,
         email: newUser.email,
         role: newUser.role,
-      }
+      },
     });
   } catch (error) {
+    console.error("Error:", error); // Debug error messages
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 // Login User
