@@ -79,5 +79,5 @@ const deleteUser = async (userId) => {
   }
 };
 
-// Export all functions at the end
+// Export all functions at the endd
 export { register, login, resetPassword, getAllUsers, updateUserRole, deleteUser };
