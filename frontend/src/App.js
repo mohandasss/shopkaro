@@ -13,6 +13,7 @@ import PaymentsPage from "./pages/PaymentsPage";
 import SearchPage from "./pages/SearchPage";
 import AdminPanelPage from "./pages/AdminPanelPage";
 import Orderpage from "./pages/Orderpage";
+import ForgetPass from "./pages/ForgetPass";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/search" element={<SearchPage />} />
         <Route path="/adminpanel" element={<AdminPanelPage />} />
         <Route path="/orders" element={<Orderpage />} />
+        <Route path="/forgetpassword" element={<ForgetPass />} />
       </Routes>
       <Footer />
     </div>

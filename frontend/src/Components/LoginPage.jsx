@@ -88,15 +88,21 @@ const LoginPage = () => {
               </div>
             </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={loading} // Disable button while loading
-                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-              >
-                {loading ? "Loading..." : "Sign in"}
-              </button>
-            </div>
+            <div className="flex flex-col w-full">
+  <button
+    type="submit"
+    disabled={loading} // Disable button while loading
+    className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+  >
+    {loading ? "Loading..." : "Sign in"}
+  </button>
+  <div className="flex justify-end mt-2">
+    <Link to="/forgetpassword" className="font-semibold text-indigo-600 hover:text-indigo-500">
+      Forgot password?
+    </Link>
+  </div>
+</div>
+
           </form>
           <Link to={"/register"}>
             <p className="mt-10 text-center text-sm text-gray-500">
