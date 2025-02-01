@@ -1,8 +1,11 @@
 import React from 'react'
+import Forget from '../Components/Forget'
 
 const ForgetPass = () => {
   return (
-    <div>ForgetPass</div>
+    <div>
+        <Forget/>
+    </div>
   )
 }
 

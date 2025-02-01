@@ -17,6 +17,7 @@ const reviewRoutes = require('./routes/reviewRoutes');
 const wishlistRoutes = require('./routes/wishlistRoutes');  
 const feedbackRoutes = require('./routes/feedbackRoutes');  // Add this line
 const razorpayRoutes = require("./routes/razorpayRoutes");
+const otpRoutes = require('./routes/otpRoutes');
 // Load environment variables
 dotenv.config();
 
@@ -69,6 +70,7 @@ app.use('/api/products/reviews', reviewRoutes);
 app.use('/api/wishlist', wishlistRoutes);   
 app.use('/api/feedback', feedbackRoutes);  // Add feedback route here
 app.use("/api/payments", razorpayRoutes);
+app.use('/api/otp', otpRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

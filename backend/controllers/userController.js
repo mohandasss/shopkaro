@@ -66,5 +66,27 @@ const getLoggedInUserProfile = async (req, res) => {
   }
 };
 
+const findUserByMobile = async (req, res) => {
+  const { phone } = req.body;  // Get phone number from body
+  console.log(req.body);
+  
+  console.log(phone); // Optional: To check the value of the phone
 
-module.exports = { updateUserProfile,getLoggedInUserProfile, updateUserAddress, getUserProfile };
+  try {
+    const user = await User.findOne({ phone });  // Query the user by phone
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });  // User not found
+    }
+
+    res.json(user);  // Return user data if found
+  } catch (error) {
+    res.status(500).json({ message: error.message });  // Handle errors
+  }
+};
+
+
+
+
+
+module.exports = { findUserByMobile,updateUserProfile,getLoggedInUserProfile, updateUserAddress, getUserProfile };

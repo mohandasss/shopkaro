@@ -65,5 +65,18 @@ const updateUserProfile = async (userId, updatedData) => {
   }
 };
 
+const getUserByNumber = async (phone) => {
+  try {
+    const response = await axios.post(`${BASE_URL}bynumber`, { phone });  // POST request with phone in body
+    return response.data;  // Return user profile data
+  } catch (error) {
+    console.error('Error fetching user profile by number:', error);
+    throw error;
+  }
+};
+
+
+
+
 // Export all functions using ES6 syntax
-export { getLoggedInUserProfile, getUserProfile, updateUserProfile };
+export { getLoggedInUserProfile, getUserByNumber,getUserProfile, updateUserProfile };
