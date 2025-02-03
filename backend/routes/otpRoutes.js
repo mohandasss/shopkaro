@@ -12,3 +12,4 @@ router.post('/verify-otp', verifyOtpController);
 module.exports = router;
 
 //otp routes
+//few are working 
