@@ -16,6 +16,8 @@ export const sendOtp = async (phone) => {
     
   try {
     const response = await axiosInstance.post('/otp/send-otp', { phone });
+    console.log(response.data);
+    
     return response.data;
   } catch (error) {
     console.error('Error sending OTP:', error.response?.data || error.message);
@@ -26,7 +28,7 @@ export const sendOtp = async (phone) => {
 // Verify OTP API call
 export const verifyOtp = async (phone, otp) => {
    phone = `+91${phone}`
-   
+   otp = otp.join("");
    console.log(phone,otp);
    
    

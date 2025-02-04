@@ -5,8 +5,6 @@ const jwt = require('jsonwebtoken');
 // Register User
 const registerUser = async (req, res) => {
   try {
-   
-
     const { name, email, password, address, role, phone } = req.body;
 
     // Check if any required field is missing
@@ -15,10 +13,22 @@ const registerUser = async (req, res) => {
       return res.status(400).json({ error: "Please provide all required fields" });
     }
 
+    // Validate email format (you can use a package like `validator` for this)
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return res.status(400).json({ error: "Invalid email format" });
+    }
+
+    // Check if email already exists
     const existingUser = await User.findOne({ email });
     if (existingUser) {
       console.log("Email already registered"); // Debug duplicate email
       return res.status(400).json({ error: "Email already registered" });
+    }
+
+    // Validate phone number format (Already done in Schema)
+    if (!/^\d{10}$/.test(phone)) {
+      return res.status(400).json({ error: "Invalid phone number format" });
     }
 
     const userRole = role || "customer";

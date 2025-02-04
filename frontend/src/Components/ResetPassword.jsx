@@ -11,15 +11,10 @@ function ResetPassword({ phone }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(phone);
-   const {_id} =await getUserByNumber(phone);
+    const { _id } = await getUserByNumber(phone);
     console.log(_id);
-    
-   
-     const res =await changePasswordById(_id,newPassword)
-console.log(res);
-
-
-    
+    const res = await changePasswordById(_id, newPassword);
+    console.log(res);
   };
 
   return (

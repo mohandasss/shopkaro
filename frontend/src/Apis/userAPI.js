@@ -67,7 +67,9 @@ const updateUserProfile = async (userId, updatedData) => {
 
 const getUserByNumber = async (phone) => {
   try {
-    const response = await axios.post(`${BASE_URL}bynumber`, { phone });  // POST request with phone in body
+    const response = await axios.post(`${BASE_URL}bynumber`, { phone }); 
+    console.log(response.data);
+     // POST request with phone in body
     return response.data;  // Return user profile data
   } catch (error) {
     console.error('Error fetching user profile by number:', error);
