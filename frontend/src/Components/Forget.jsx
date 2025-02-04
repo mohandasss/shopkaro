@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { getUserByNumber } from "../Apis/userAPI";  // Assuming this is your API function
 import OTP from "./OTP";
+import { sendOtp } from "../Apis/OTP";
 
 const Forget = () => {
   const [formData, setFormData] = useState({ phone: "" });
@@ -22,6 +23,7 @@ const Forget = () => {
       console.log(response);
       if (response) {
         setUserFound(true);  // User found, proceed with OTP
+        await sendOtp(formData.phone)
         setOtpSent(true);  // OTP sent successfully
       }
     } catch (error) {
@@ -63,7 +65,7 @@ const Forget = () => {
             </button>
           </form>
         ) : otpSent ? (
-          <OTP />
+          <OTP phone={formData.phone} />
         ) : (
           <p>User not found!</p>
         )}

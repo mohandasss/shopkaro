@@ -25,7 +25,7 @@ const sendOtpController = async (req, res) => {
 // Verify OTP function
 const verifyOtpController = (req, res) => {
   const { phone, otp } = req.body;
-console.log(phone,otp);
+    console.log(phone,otp);
 
   const isOtpValid = verifyOtp(phone, otp);
 

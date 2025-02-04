@@ -7,7 +7,7 @@ const twilioClient = new Twilio(accountSid, authToken);
 const sendOtp = async (phoneNumber, otp) => {
   try {
     const message = await twilioClient.messages.create({
-      body: `Your OTP code is: ${otp}`,
+      body: `Your Shopkaro OTP is: ${otp}`,
       from: fromPhoneNumber,
       to: phoneNumber,
     });

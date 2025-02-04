@@ -56,9 +56,19 @@ const loginUser = async (req, res) => {
   try {
     const user = await User.findOne({ email });
 
-    // Check if user exists and password is correct
-    if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ error: 'Invalid credentials' });
+    if (!user) {
+      console.log("user not found");
+      
+      return res.status(401).json({ error: ' user not found' });
+    }
+
+    // Compare hashed password with the input
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      console.log("password not matched");
+      return res.status(401).json({ error: 'password not matched ' });
+     
+      
     }
 
     // Generate JWT token
@@ -72,6 +82,7 @@ const loginUser = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
 
 
 const resetPassword = async (req, res) => {

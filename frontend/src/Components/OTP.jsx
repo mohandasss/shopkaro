@@ -1,8 +1,11 @@
 import { useState, useRef } from "react";
+import { verifyOtp } from "../Apis/OTP";
+import ResetPassword from "./ResetPassword";
 
-function OTP() {
+function OTP({ phone }) {
   const [otp, setOtp] = useState(["", "", "", ""]);
   const [isVerifying, setIsVerifying] = useState(false);
+  const [isVerified, setIsVerified] = useState(false);
   const inputRefs = useRef([]);
 
   const handleChange = (e, index) => {
@@ -29,16 +32,22 @@ function OTP() {
     setOtp(pastedValue.split("").map((char) => char || ""));
   };
 
-  const handleVerify = () => {
+  const handleVerify = async () => {
     setIsVerifying(true);
-    // Add your verification logic here
-    setTimeout(() => setIsVerifying(false), 2000);
+    try {
+      const response = await verifyOtp(phone, otp.join("")); // Ensure OTP is a string
+      console.log(response);
+      setIsVerified(true); // OTP is verified, show ResetPassword
+    } catch (error) {
+      console.error("Error verifying OTP:", error);
+    } finally {
+      setIsVerifying(false);
+    }
   };
 
-  const handleResend = () => {
-    // Add resend logic here
-    alert("Resend code");
-  };
+  if (isVerified) {
+    return <ResetPassword phone={phone} />;
+  }
 
   return (
     <div className="w-full max-w-md mx-auto bg-white p-6 rounded-lg shadow-lg">
@@ -73,12 +82,12 @@ function OTP() {
       <div className="text-center mt-4">
         <span className="text-sm text-gray-500">Didn't receive code? </span>
         <button
-          onClick={handleResend}
           className="text-blue-500 hover:underline focus:outline-none"
         >
           Resend
         </button>
       </div>
+     
     </div>
   );
 }
