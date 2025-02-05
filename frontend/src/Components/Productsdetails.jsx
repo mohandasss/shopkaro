@@ -6,6 +6,7 @@ import { getLoggedInUserProfile } from "../Apis/userAPI";
 import Popup from "./popup";
 import { addToCart } from "../Apis/cartAPI";
 import { useEffect } from "react";
+import ReviewForm from "./ReviewForm";
 
 
 function ProductDetails() {
@@ -215,8 +216,11 @@ function ProductDetails() {
               />
             </div>
           </div>
+          <ReviewForm/>
         </div>
+        
       </div>
+      
 
       {/* Reviews Section with Infinite Carousel */}
       <div className="mt-8 md:mt-16">
