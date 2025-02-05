@@ -216,7 +216,7 @@ function ProductDetails() {
               />
             </div>
           </div>
-          <ReviewForm/>
+          <ReviewForm ProductId={_id} />
         </div>
         
       </div>
