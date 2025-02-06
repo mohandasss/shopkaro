@@ -1,20 +1,35 @@
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { changePasswordById, getUserByNumber } from "../Apis/userAPI";
+import { useNavigate } from "react-router-dom";
+import Popup from "./popup";
 
 function ResetPassword({ phone }) {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [message, setMessage] = useState("");
+  const [isVisible, setVisible] = useState(false);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(phone);
+    
     const { _id } = await getUserByNumber(phone);
     console.log(_id);
+    
     const res = await changePasswordById(_id, newPassword);
-    console.log(res);
+    if (res.message === "Password updated successfully") {
+      setMessage("Password updated successfully!");
+      setVisible(true); // Show popup
+
+      setTimeout(() => {
+        setVisible(false); // Hide popup after 2 seconds
+        navigate("/login"); // Redirect after hiding popup
+      }, 2000);
+    }
   };
 
   return (
@@ -62,6 +77,9 @@ function ResetPassword({ phone }) {
           Reset Password
         </button>
       </form>
+
+      {/* Show Popup when isVisible is true */}
+      {isVisible && <Popup message={message} isVisible={isVisible} />}
     </div>
   );
 }

@@ -35,7 +35,7 @@ function OTP({ phone }) {
   const handleVerify = async () => {
     setIsVerifying(true);
     try {
-      const response = await verifyOtp(phone, otp.join("")); // Ensure OTP is a string
+      const response = await verifyOtp(phone, otp); // Ensure OTP is a string
       console.log(response);
       setIsVerified(true); // OTP is verified, show ResetPassword
     } catch (error) {
