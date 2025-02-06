@@ -20,6 +20,7 @@ import ProfileModal from "./ProfileModal";
 import { Search } from "lucide-react";
 import { searchProducts } from "../Apis/productAPI";
 import { FaShoppingBag } from "react-icons/fa";
+
 const Navbar = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [products, setProducts] = useState([]);
@@ -30,6 +31,7 @@ const Navbar = () => {
   const [profile, setProfile] = useState(null);
   const [error, setError] = useState(null);
   const [modal, setModal] = useState(false);
+  const [isVisible, setVisible] = useState(false);
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -59,6 +61,7 @@ const Navbar = () => {
           setProducts(results.products);
           navigate("/search", { state: { product: results.products } });
         } else {
+          setVisible(true)
           setError("No products found.");
         }
       } catch (err) {
@@ -94,6 +97,13 @@ const Navbar = () => {
         <Loader />
       </div>
     );
+  }
+
+  if(isVisible)
+  {
+    setTimeout(() => {
+      setVisible(false); // Hide popup after 2 seconds
+    }, 2000);
   }
 
   return (
@@ -248,6 +258,7 @@ const Navbar = () => {
                   </Disclosure.Button>
                 </div>
               </div>
+              {isVisible && <Popup message={error} isVisible={isVisible} />}
             </div>
 
             <Disclosure.Panel className="sm:hidden">
@@ -276,7 +287,7 @@ const Navbar = () => {
                   {
                     name: "Orders",
                     href: "/orders",
-                    icon: <FaShoppingBag className="mr-1" />,
+                    icon: <FaShoppingBag className="mr-2" />,
                   }
                 ].map((item) => (
                   <Disclosure.Button

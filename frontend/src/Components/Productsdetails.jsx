@@ -15,13 +15,15 @@ function ProductDetails() {
   const [showAllReviews, setShowAllReviews] = useState(false);
   const [isLiked, setIsLiked] = useState(false);
   const { _id, imageURL, reviews, name, price, description, rating, quantity } =
-    location?.state || {};
+    location?.state.product || {};
   const [popupMessage, setPopupMessage] = useState("");
   const [isPopupVisible, setIsPopupVisible] = useState(false);
   const [currentQuantity, setCurrentQuantity] = useState(1);
 
 
-
+  
+  
+  
   
   
   // Handle case where state is missing (e.g., user accesses directly via URL)
