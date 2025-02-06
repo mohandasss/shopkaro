@@ -1,7 +1,3 @@
-Here’s the updated README file for your **ShopKaro** project with the provided details:
-
----
-
 # **ShopKaro**
 
 Your ultimate e-commerce platform for browsing and showcasing products. Built with a modern tech stack, ShopKaro ensures seamless and efficient user experiences.
@@ -103,6 +99,3 @@ Contributions are welcome!
 4. Push to the branch (`git push origin feature/YourFeature`).
 5. Open a pull request.
 
----
-
-Let me know if you'd like to refine this further or add specific images and additional content!
