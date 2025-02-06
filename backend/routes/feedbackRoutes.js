@@ -1,9 +1,9 @@
 const express = require('express');
-const { sendFeedback } = require('../controllers/feedbackController');
+const { submitFeedback } = require('../controllers/feedbackController');
+const validateEmail = require('../middlewares/validateEmail');
 
 const router = express.Router();
 
-// POST route to submit feedback
-router.post('/feedback/submit', sendFeedback);
+router.post('/submit', validateEmail, submitFeedback);
 
 module.exports = router;

@@ -71,6 +71,7 @@ app.use('/api/wishlist', wishlistRoutes);
 app.use('/api/feedback', feedbackRoutes);  // Add feedback route here
 app.use("/api/payments", razorpayRoutes);
 app.use('/api/otp', otpRoutes);
+app.use('/api/feedback', feedbackRoutes);
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
